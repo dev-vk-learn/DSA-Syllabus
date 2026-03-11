@@ -121,6 +121,64 @@ h1 em{font-style:normal;color:var(--a1);}h1 b{font-weight:800;color:var(--a3);}
 .snav-link{font-size:9px;letter-spacing:.1em;color:var(--muted);cursor:pointer;padding:3px 8px;border:1px solid transparent;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
 .snav-link:hover{color:var(--a1);border-color:rgba(124,106,247,.3);}
 footer{text-align:center;padding:60px 28px 40px;font-size:9.5px;color:var(--muted);letter-spacing:.08em;line-height:1.8;}
+.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;cursor:help;transition:background .3s;}
+.sync-dot.idle{background:#22c55e;}.sync-dot.saving{background:#fbbf24;animation:pulse 1s infinite;}.sync-dot.error{background:#ef4444;}
+.user-panel{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);padding:10px 16px;margin:20px auto 0;max-width:860px;flex-wrap:wrap;}
+.user-panel label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.user-input{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 6px;outline:none;width:160px;transition:border-color .2s;}
+.user-input:focus{border-bottom-color:var(--a1);}
+.upanel-btn{background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:5px 12px;cursor:pointer;transition:all .2s;letter-spacing:.08em;text-transform:uppercase;}
+.upanel-btn:hover{border-color:var(--a1);color:var(--a1);}.upanel-btn.danger:hover{border-color:#ef4444;color:#ef4444;}
+.upanel-btn.cfg-btn{border-color:rgba(251,191,36,.4);color:var(--a6);}
+.upanel-btn.cfg-btn:hover{border-color:var(--a6);background:rgba(251,191,36,.07);}
+.sync-label{font-size:9px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-left:auto;}
+.db-badge{font-size:8px;letter-spacing:.15em;padding:2px 8px;text-transform:uppercase;background:rgba(34,197,94,.1);color:var(--done);border:1px solid rgba(34,197,94,.25);}
+
+/* ── CONFIG MODAL ── */
+.modal-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
+  z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+}
+.modal-backdrop.open{display:flex;}
+.modal{
+  background:var(--surface);border:1px solid var(--border2);
+  width:min(520px,94vw);padding:32px;position:relative;
+}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-size:10px;color:var(--muted2);line-height:1.6;margin-bottom:24px;}
+.modal-sub a{color:var(--a1);text-decoration:none;}
+.modal-sub a:hover{text-decoration:underline;}
+.cfg-row{margin-bottom:16px;}
+.cfg-label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;}
+.cfg-input{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:9px 12px;outline:none;transition:border-color .2s;
+}
+.cfg-input:focus{border-color:var(--a1);}
+.cfg-hint{font-size:9px;color:var(--muted);margin-top:4px;line-height:1.5;}
+.cfg-hint code{color:var(--a3);background:rgba(34,211,238,.07);padding:1px 5px;}
+.modal-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;}
+.modal-btn{
+  background:transparent;border:1px solid var(--border);color:var(--muted2);
+  font-family:'JetBrains Mono',monospace;font-size:10px;padding:8px 18px;
+  cursor:pointer;transition:all .2s;letter-spacing:.08em;text-transform:uppercase;
+}
+.modal-btn.primary{border-color:var(--a1);color:var(--a1);background:rgba(124,106,247,.08);}
+.modal-btn.primary:hover{background:rgba(124,106,247,.18);}
+.modal-btn:hover{border-color:var(--muted2);color:var(--text);}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.cfg-warning{
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);
+  padding:10px 14px;margin-bottom:20px;font-size:10px;color:#fbbf24;line-height:1.65;
+}
+.cfg-steps{
+  background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.15);
+  padding:12px 16px;margin-bottom:20px;font-size:10px;color:var(--muted2);line-height:1.9;
+}
+.cfg-steps b{color:var(--a3);}
+.cfg-steps code{color:var(--a1);background:rgba(124,106,247,.08);padding:1px 5px;}
 ::-webkit-scrollbar{width:6px;height:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--a1);}
 @media(max-width:640px){.stats-bar{flex-wrap:wrap;}.stat{flex:1 1 40%;}.controls{gap:8px;}h1{font-size:2rem;}}
 </style>
@@ -145,6 +203,75 @@ footer{text-align:center;padding:60px 28px 40px;font-size:9.5px;color:var(--mute
     <div class="prog-meta"><span id="pLeft">—</span><span id="pPct">0%</span></div>
   </div>
 </header>
+
+<!-- USER / SYNC PANEL -->
+<div class="user-panel wrap">
+  <label>User ID</label>
+  <input class="user-input" id="userInput" value="default" placeholder="your-name" onkeydown="if(event.key==='Enter')switchUser()">
+  <button class="upanel-btn" onclick="switchUser()">Load</button>
+  <button class="upanel-btn cfg-btn" onclick="showConfigModal()">⚙ Atlas Config</button>
+  <button class="upanel-btn" onclick="exportProgress()">Export JSON</button>
+  <button class="upanel-btn danger" onclick="resetProgress()">Reset</button>
+  <div class="sync-label">
+    <span class="db-badge">MongoDB Atlas</span>
+    <span id="syncDot" class="sync-dot error" title="Not configured"></span>
+    <span id="syncText" style="font-size:9px;color:var(--muted)">not configured</span>
+  </div>
+</div>
+
+<!-- ATLAS CONFIG MODAL -->
+<div class="modal-backdrop" id="cfgModal" onclick="if(event.target===this)hideConfigModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="hideConfigModal()">✕</button>
+    <div class="modal-title">MongoDB Atlas Configuration</div>
+    <div class="modal-sub">
+      Credentials stored in <code style="color:var(--a3)">localStorage</code> — never sent anywhere except Atlas.<br>
+      Need help? See the <a href="https://www.mongodb.com/docs/atlas/app-services/data-api/" target="_blank">Atlas Data API docs ↗</a>
+    </div>
+
+    <div class="cfg-warning">
+      ⚠ This app calls Atlas directly from the browser. Your API key is stored in localStorage.
+      Keep the key scope minimal: <strong>read + write on one collection only.</strong>
+      Don't commit your key to a public GitHub repo — this file stores it client-side at runtime.
+    </div>
+
+    <div class="cfg-steps">
+      <b>Setup steps (5 min):</b><br>
+      1. Create a free <a href="https://cloud.mongodb.com" target="_blank" style="color:var(--a3)">Atlas cluster</a> → App Services → Create App<br>
+      2. In the App: <b>HTTPS Endpoints → Data API</b> → Enable<br>
+      3. Copy your <code>App ID</code> (looks like <code>data-abcde</code>)<br>
+      4. Authentication → API Keys → Create key → copy it here<br>
+      5. Rules → Add rule for <code>progress</code> collection: allow read+write<br>
+      6. Add your GitHub Pages domain to App Settings → Allowed Request Origins
+    </div>
+
+    <div class="cfg-row">
+      <label class="cfg-label">App ID <span style="color:var(--muted)">(e.g. data-abcde)</span></label>
+      <input class="cfg-input" id="cfgAppId" placeholder="data-xxxxxxxx">
+    </div>
+    <div class="cfg-row">
+      <label class="cfg-label">API Key</label>
+      <input class="cfg-input" id="cfgApiKey" placeholder="your-atlas-api-key" type="password">
+      <div class="cfg-hint">Create a key with read/write access to the <code>progress</code> collection only.</div>
+    </div>
+    <div class="cfg-row">
+      <label class="cfg-label">Cluster / Data Source name</label>
+      <input class="cfg-input" id="cfgCluster" placeholder="Cluster0">
+      <div class="cfg-hint">The data source name shown in Atlas (default: <code>Cluster0</code>)</div>
+    </div>
+    <div class="cfg-row">
+      <label class="cfg-label">Database name</label>
+      <input class="cfg-input" id="cfgDb" placeholder="syllabus">
+      <div class="cfg-hint">Will be auto-created on first save. The collection used is <code>progress</code>.</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-btn primary" onclick="saveConfig()">Save & Connect</button>
+      <button class="modal-btn" id="cfgTestBtn" onclick="testAtlasConnection()">Test Connection</button>
+      <button class="modal-btn" onclick="hideConfigModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <div class="legend">
   <div class="leg"><div class="ldot" style="background:var(--a1)"></div>Data Structures</div>
@@ -417,8 +544,269 @@ const D=[
   ]},
 ];
 
-let st={};try{st=JSON.parse(sessionStorage.getItem('sv3')||'{}');}catch(e){}
-function save(){try{sessionStorage.setItem('sv3',JSON.stringify(st));}catch(e){}}
+// ═══════════════════════════════════════════════════
+// MONGODB ATLAS DATA API — direct browser calls
+// No server needed. Config stored in localStorage.
+// ═══════════════════════════════════════════════════
+
+// ── Config helpers
+function getCfg() {
+  try { return JSON.parse(localStorage.getItem('atlas_cfg') || '{}'); } catch(e) { return {}; }
+}
+function saveCfg(cfg) {
+  localStorage.setItem('atlas_cfg', JSON.stringify(cfg));
+}
+function isConfigured() {
+  const c = getCfg();
+  return !!(c.appId && c.apiKey && c.cluster && c.db);
+}
+
+// Atlas Data API base URL
+// Endpoint: https://data.mongodb-api.com/app/{appId}/endpoint/data/v1/action/{action}
+function atlasUrl(action) {
+  return `https://data.mongodb-api.com/app/${getCfg().appId}/endpoint/data/v1/action/${action}`;
+}
+
+// Common headers for every Atlas request
+function atlasHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'api-key': getCfg().apiKey,
+  };
+}
+
+// Build base document filter for this user
+function userFilter() {
+  return { userId: USER_ID };
+}
+
+// ── State
+let USER_ID = localStorage.getItem('syllabus_user') || 'default';
+let st = {};
+let _saveQueue = {};
+let _syncStatus = 'idle';
+
+function setUserId(id) {
+  USER_ID = (id || '').trim() || 'default';
+  localStorage.setItem('syllabus_user', USER_ID);
+}
+
+// ── Sync indicator
+function setSyncStatus(s) {
+  _syncStatus = s;
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncText');
+  if (dot) dot.className = 'sync-dot ' + s;
+  if (txt) txt.textContent = s === 'idle' ? 'synced' : s === 'saving' ? 'saving…' : 'offline (local)';
+  if (dot) dot.title = { idle:'Saved to Atlas', saving:'Saving…', error:'Atlas unreachable — using localStorage' }[s] || s;
+}
+
+// ── localStorage fallback
+function saveLocal() {
+  try { localStorage.setItem(`sv_${USER_ID}`, JSON.stringify(st)); } catch(e) {}
+}
+function loadLocal() {
+  try { return JSON.parse(localStorage.getItem(`sv_${USER_ID}`) || '{}'); } catch(e) { return {}; } 
+}
+
+// ── Debounce
+function debounceSave(fn, key) {
+  clearTimeout(_saveQueue[key]);
+  _saveQueue[key] = setTimeout(fn, 900);
+}
+
+// ── Atlas findOne
+async function atlasFind() {
+  const cfg = getCfg();
+  const res = await fetch(atlasUrl('findOne'), {
+    method: 'POST',
+    headers: atlasHeaders(),
+    body: JSON.stringify({
+      dataSource: cfg.cluster,
+      database: cfg.db,
+      collection: 'progress',
+      filter: userFilter(),
+    }),
+  });
+  if (!res.ok) throw new Error(`Atlas ${res.status}: ${await res.text()}`);
+  const { document } = await res.json();
+  return document; // null if not found
+}
+
+// ── Atlas upsert (replaceOne with upsert)
+async function atlasUpsert(update) {
+  const cfg = getCfg();
+  const res = await fetch(atlasUrl('updateOne'), {
+    method: 'POST',
+    headers: atlasHeaders(),
+    body: JSON.stringify({
+      dataSource: cfg.cluster,
+      database: cfg.db,
+      collection: 'progress',
+      filter: userFilter(),
+      update: { $set: { ...update, userId: USER_ID, updatedAt: { $date: new Date().toISOString() } } },
+      upsert: true,
+    }),
+  });
+  if (!res.ok) throw new Error(`Atlas ${res.status}: ${await res.text()}`);
+  return res.json();
+}
+
+// ── Load progress from Atlas
+async function loadProgress() {
+  if (!isConfigured()) {
+    // No Atlas config yet — load from localStorage and show config prompt
+    st = loadLocal();
+    render();
+    setSyncStatus('error');
+    // Show config modal on first visit
+    if (!getCfg().appId) showConfigModal();
+    return;
+  }
+  setSyncStatus('saving');
+  try {
+    const doc = await atlasFind();
+    st = {};
+    if (doc) {
+      // Atlas stores nested objects; flatten into st{}
+      Object.entries(doc.topics     || {}).forEach(([k,v]) => { st[k] = v; });
+      Object.entries(doc.challenges  || {}).forEach(([k,v]) => { st[k] = v; });
+      Object.entries(doc.notes       || {}).forEach(([k,v]) => { st[k] = v; });
+    }
+    saveLocal(); // keep local copy in sync
+    setSyncStatus('idle');
+  } catch(e) {
+    console.warn('[loadProgress] Atlas error, using localStorage:', e.message);
+    st = loadLocal();
+    setSyncStatus('error');
+  }
+  render();
+}
+
+// ── Build nested doc from flat st{} for Atlas storage
+function buildAtlasDoc() {
+  const topics = {}, challenges = {}, notes = {};
+  Object.entries(st).forEach(([k, v]) => {
+    if (k.startsWith('note-'))       notes[k] = v;
+    else if (k.startsWith('c-'))     challenges[k] = v;
+    else                             topics[k] = v;
+  });
+  return { topics, challenges, notes };
+}
+
+// ── Save whole state (debounced bulk approach — single upsert)
+let _bulkSaveTimer = null;
+function scheduleBulkSave() {
+  saveLocal();
+  if (!isConfigured()) return;
+  clearTimeout(_bulkSaveTimer);
+  setSyncStatus('saving');
+  _bulkSaveTimer = setTimeout(async () => {
+    try {
+      await atlasUpsert(buildAtlasDoc());
+      setSyncStatus('idle');
+    } catch(e) {
+      console.warn('[bulkSave]', e.message);
+      setSyncStatus('error');
+    }
+  }, 600);
+}
+
+// ── Wrappers called by UI interactions
+function apiPatchTopic(key, value)    { scheduleBulkSave(); }
+function apiPatchChallenge(key, value){ scheduleBulkSave(); }
+function apiPatchNote(key, text)      {
+  // notes debounce separately to avoid saving mid-typing
+  saveLocal();
+  if (!isConfigured()) return;
+  debounceSave(() => {
+    setSyncStatus('saving');
+    atlasUpsert(buildAtlasDoc())
+      .then(() => setSyncStatus('idle'))
+      .catch(e => { console.warn(e); setSyncStatus('error'); });
+  }, key);
+}
+
+// ── Reset progress
+async function resetProgress() {
+  if (!confirm(`Reset ALL progress for "${USER_ID}"? Cannot be undone.`)) return;
+  st = {};
+  saveLocal();
+  setSyncStatus('saving');
+  if (isConfigured()) {
+    try {
+      await atlasUpsert({ topics: {}, challenges: {}, notes: {} });
+      setSyncStatus('idle');
+    } catch(e) { setSyncStatus('error'); }
+  } else { setSyncStatus('error'); }
+  render();
+}
+
+// ── Switch user
+function switchUser() {
+  const input = document.getElementById('userInput');
+  const newId = (input?.value || '').trim();
+  if (!newId) return;
+  setUserId(newId);
+  loadProgress();
+}
+
+// ── Export JSON
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(st, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `syllabus-${USER_ID}-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+// ══════════════════════════════════════════════
+// CONFIG MODAL — set Atlas credentials in-browser
+// ══════════════════════════════════════════════
+function showConfigModal() {
+  document.getElementById('cfgModal').classList.add('open');
+  const c = getCfg();
+  document.getElementById('cfgAppId').value   = c.appId   || '';
+  document.getElementById('cfgApiKey').value  = c.apiKey  || '';
+  document.getElementById('cfgCluster').value = c.cluster || 'Cluster0';
+  document.getElementById('cfgDb').value      = c.db      || 'syllabus';
+}
+function hideConfigModal() {
+  document.getElementById('cfgModal').classList.remove('open');
+}
+async function saveConfig() {
+  const appId   = document.getElementById('cfgAppId').value.trim();
+  const apiKey  = document.getElementById('cfgApiKey').value.trim();
+  const cluster = document.getElementById('cfgCluster').value.trim() || 'Cluster0';
+  const db      = document.getElementById('cfgDb').value.trim()      || 'syllabus';
+  if (!appId || !apiKey) { alert('App ID and API Key are required.'); return; }
+  saveCfg({ appId, apiKey, cluster, db });
+  hideConfigModal();
+  await loadProgress(); // reload with new credentials
+}
+async function testAtlasConnection() {
+  const btn = document.getElementById('cfgTestBtn');
+  btn.textContent = 'Testing…';
+  try {
+    const appId   = document.getElementById('cfgAppId').value.trim();
+    const apiKey  = document.getElementById('cfgApiKey').value.trim();
+    const cluster = document.getElementById('cfgCluster').value.trim() || 'Cluster0';
+    const db      = document.getElementById('cfgDb').value.trim() || 'syllabus';
+    const res = await fetch(
+      `https://data.mongodb-api.com/app/${appId}/endpoint/data/v1/action/findOne`,
+      { method:'POST', headers:{'Content-Type':'application/json','api-key':apiKey},
+        body: JSON.stringify({ dataSource:cluster, database:db, collection:'progress', filter:{_test:1} }) }
+    );
+    if (res.status === 401) throw new Error('Invalid API key');
+    if (res.status === 404) throw new Error('App ID not found');
+    btn.textContent = res.ok || res.status===200 ? '✓ Connected!' : `Status ${res.status} — check cluster/db name`;
+    setTimeout(()=>{ btn.textContent='Test Connection'; }, 3000);
+  } catch(e) {
+    btn.textContent = '✗ ' + e.message;
+    setTimeout(()=>{ btn.textContent='Test Connection'; }, 4000);
+  }
+}
+
 let curF='all',curV='grid',curSt='order',hd=false;
 
 function computeStats(){
@@ -489,10 +877,23 @@ function render(){
   });
   updateStats();
 }
-function toggleT(key){st[key]=!st[key];save();updateStats();if(hd&&st[key])document.querySelector(`[data-key="${key}"]`)?.classList.add('hidden');}
-function toggleCh(ck){st[ck]=!st[ck];save();updateStats();}
+function toggleT(key){
+  st[key]=!st[key];
+  apiPatchTopic(key, st[key]);
+  updateStats();
+  if(hd&&st[key])document.querySelector(`[data-key="${key}"]`)?.classList.add('hidden');
+}
+function toggleCh(ck){
+  st[ck]=!st[ck];
+  apiPatchChallenge(ck, st[ck]);
+  updateStats();
+}
 function toggleExp(c){c.classList.toggle('expanded');}
-function saveNote(el){st[el.dataset.nk]=el.value;save();}
+function saveNote(el){
+  const nk=el.dataset.nk;
+  st[nk]=el.value;
+  debounceSave(()=>apiPatchNote(nk, el.value), nk);
+}
 function setF(tag,btn){curF=tag;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
 function setV(v){curV=v;document.getElementById('vG').classList.toggle('on',v==='grid');document.getElementById('vL').classList.toggle('on',v==='list');document.querySelectorAll('.cards').forEach(c=>c.classList.toggle('lv',v==='list'));}
 function setS(s,btn){curSt=s;document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
@@ -510,7 +911,10 @@ function doSearch(){
   });
 }
 window.addEventListener('scroll',()=>document.getElementById('sNav').classList.toggle('vis',scrollY>300),{passive:true});
-render();
+// Bootstrap: seed user input, then load from MongoDB
+const _uInput = document.getElementById('userInput');
+if (_uInput) _uInput.value = USER_ID;
+loadProgress();
 </script>
 </body>
 </html>
