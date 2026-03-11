@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinayak's Master Algorithm Syllabus</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #f97316;
+    --accent3: #22d3ee;
+    --accent4: #a3e635;
+    --text: #e8e8f0;
+    --muted: #666680;
+    --done: #22c55e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,247,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 60px 24px 40px;
+    position: relative;
+    text-align: center;
+  }
+  .header-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 14px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  h1 span.g1 { color: var(--accent); }
+  h1 span.g2 { color: var(--accent3); }
+  .subtitle {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    height: 6px;
+    margin: 30px auto 10px;
+    max-width: 600px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 4px;
+  }
+  .progress-label { text-align: center; font-size: 11px; color: var(--muted); margin-bottom: 40px; }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(124,106,247,0.08);
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 28px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .section-tag {
+    margin-left: auto;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+  .tag-ds   { background: rgba(124,106,247,0.15); color: var(--accent);  border: 1px solid rgba(124,106,247,0.3); }
+  .tag-algo { background: rgba(249,115,22,0.15);  color: var(--accent2); border: 1px solid rgba(249,115,22,0.3); }
+  .tag-ml   { background: rgba(34,211,238,0.12);  color: var(--accent3); border: 1px solid rgba(34,211,238,0.3); }
+  .tag-sys  { background: rgba(163,230,53,0.12);  color: var(--accent4); border: 1px solid rgba(163,230,53,0.3); }
+  .tag-adv  { background: rgba(251,191,36,0.12);  color: #fbbf24;        border: 1px solid rgba(251,191,36,0.3); }
+
+  /* CARDS GRID */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+    transform-origin: left;
+  }
+  .card:hover { border-color: var(--accent); background: #1a1a25; transform: translateY(-2px); }
+  .card:hover::before { transform: scaleX(1); }
+  .card.done { border-color: rgba(34,197,94,0.4); }
+  .card.done::before { background: var(--done); transform: scaleX(1); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .checkbox {
+    width: 18px; height: 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .card.done .checkbox { background: var(--done); border-color: var(--done); }
+
+  .card-desc {
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .card-challenges {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .card.expanded .card-challenges { display: block; }
+  .card-challenges h4 {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  .challenge-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 10.5px;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+  }
+  .challenge-item:last-child { border-bottom: none; }
+  .challenge-item:hover { color: var(--text); }
+  .c-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    margin-top: 5px;
+    transition: background 0.2s;
+  }
+  .challenge-item.c-done .c-dot { background: var(--done); }
+  .challenge-item.c-done span { text-decoration: line-through; opacity: 0.5; }
+
+  .diff-badge {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 1px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .diff-E { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .diff-M { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .diff-H { background: rgba(239,68,68,0.15);  color: #ef4444; }
+
+  /* LEGEND */
+  .legend {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 32px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  footer {
+    text-align: center;
+    padding: 60px 24px 40px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-tag">// master syllabus v1.0</div>
+  <h1>
+    <span class="g1">Algorithm</span> &amp;<br>
+    <span class="g2">Systems</span> Mastery
+  </h1>
+  <p class="subtitle">DSA → Algorithms → ML/DL → QML/DNA/OS — problem-first, thinking-first</p>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 0 topics completed</div>
+</header>
+
+<div class="container">
+  <div class="legend">
+    <span><span class="leg-dot" style="background:#22c55e"></span>Easy</span>
+    <span><span class="leg-dot" style="background:#fbbf24"></span>Medium</span>
+    <span><span class="leg-dot" style="background:#ef4444"></span>Hard</span>
+    <span><span class="leg-dot" style="background:var(--accent)"></span>Data Structures</span>
+    <span><span class="leg-dot" style="background:var(--accent2)"></span>Algorithms</span>
+    <span><span class="leg-dot" style="background:var(--accent3)"></span>ML/DL/QML</span>
+    <span><span class="leg-dot" style="background:var(--accent4)"></span>Systems</span>
+    <span><span class="leg-dot" style="background:#fbbf24"></span>Advanced</span>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterAll(this)">ALL</button>
+    <button class="filter-btn" onclick="filterTag('ds', this)">DATA STRUCTURES</button>
+    <button class="filter-btn" onclick="filterTag('algo', this)">ALGORITHMS</button>
+    <button class="filter-btn" onclick="filterTag('ml', this)">ML / DL / QML</button>
+    <button class="filter-btn" onclick="filterTag('sys', this)">SYSTEMS</button>
+    <button class="filter-btn" onclick="filterTag('adv', this)">ADVANCED</button>
+  </div>
+
+  <div id="syllabus"></div>
+</div>
+
+<footer>click any card to expand challenges · click checkbox to mark done · progress saves in session</footer>
+
+<script>
+const data = [
+  {
+    id: "s1", num: "01", title: "Linear Data Structures", tag: "ds", tagLabel: "Data Structures",
+    topics: [
+      { name: "Queue & Deque", desc: "FIFO, circular queue, priority queue, monotonic deque.", challenges: [
+        {t:"Sliding Window Maximum",d:"H"},{t:"Design Circular Queue",d:"M"},{t:"Task Scheduler",d:"M"},{t:"First Non-Repeating Char in Stream",d:"M"}
+      ]},
+      { name: "Stack", desc: "Monotonic stack, stack with min/max, expression parsing.", challenges: [
+        {t:"Largest Rectangle in Histogram",d:"H"},{t:"Daily Temperatures",d:"M"},{t:"Valid Parentheses",d:"E"},{t:"Decode String",d:"M"}
+      ]},
+      { name: "Linked List", desc: "Singly, doubly, circular; fast-slow pointers, reversal.", challenges: [
+        {t:"Reverse Nodes in k-Group",d:"H"},{t:"LRU Cache",d:"M"},{t:"Detect Cycle",d:"E"},{t:"Merge K Sorted Lists",d:"H"}
+      ]},
+      { name: "Hash Map / Hash Set", desc: "Collision, chaining, open addressing, rolling hash.", challenges: [
+        {t:"Two Sum",d:"E"},{t:"Group Anagrams",d:"M"},{t:"Longest Consecutive Sequence",d:"M"},{t:"Subarray Sum Equals K",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s2", num: "02", title: "Trees", tag: "ds", tagLabel: "Data Structures",
+    topics: [
+      { name: "Binary Tree Traversals", desc: "Inorder, preorder, postorder, level-order, Morris traversal.", challenges: [
+        {t:"Binary Tree Zigzag Level Order",d:"M"},{t:"Recover BST",d:"M"},{t:"Serialize & Deserialize",d:"H"},{t:"Vertical Order Traversal",d:"H"}
+      ]},
+      { name: "BST", desc: "Search, insert, delete, LCA, augmented BST.", challenges: [
+        {t:"Kth Smallest in BST",d:"M"},{t:"Validate BST",d:"M"},{t:"Convert Sorted Array to BST",d:"E"},{t:"Floor / Ceil in BST",d:"M"}
+      ]},
+      { name: "AVL / Red-Black Trees", desc: "Rotations, balancing invariant, amortized cost.", challenges: [
+        {t:"Implement AVL Insert",d:"H"},{t:"Count of Smaller Numbers After Self",d:"H"}
+      ]},
+      { name: "Trie (Prefix Tree)", desc: "Insert/search, wildcard, compressed trie.", challenges: [
+        {t:"Word Search II",d:"H"},{t:"Design Search Autocomplete",d:"H"},{t:"Longest Word in Dictionary",d:"M"}
+      ]},
+      { name: "Segment Tree / BIT", desc: "Range queries, lazy propagation, Fenwick tree.", challenges: [
+        {t:"Range Sum Query - Mutable",d:"M"},{t:"Count of Range Sum",d:"H"},{t:"Falling Squares",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s3", num: "03", title: "Heap & Priority Queue", tag: "ds", tagLabel: "Data Structures",
+    topics: [
+      { name: "Min/Max Heap", desc: "Heapify, heap sort, k-th element problems.", challenges: [
+        {t:"Kth Largest Element",d:"M"},{t:"Find Median from Data Stream",d:"H"},{t:"Merge K Sorted Arrays",d:"H"}
+      ]},
+      { name: "Custom Comparators", desc: "Multi-key ordering, lazy deletion heap.", challenges: [
+        {t:"IPO (Maximize Capital)",d:"H"},{t:"Reorganize String",d:"M"},{t:"Smallest Range Covering K Lists",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s4", num: "04", title: "Graphs", tag: "ds", tagLabel: "Data Structures",
+    topics: [
+      { name: "Graph Representation", desc: "Adjacency list/matrix, edge list, implicit graphs.", challenges: [
+        {t:"Clone Graph",d:"M"},{t:"Number of Islands",d:"M"}
+      ]},
+      { name: "BFS / DFS", desc: "Connected components, flood fill, multi-source BFS.", challenges: [
+        {t:"Word Ladder",d:"H"},{t:"Pacific Atlantic Water Flow",d:"M"},{t:"Rotting Oranges",d:"M"},{t:"Shortest Bridge",d:"M"}
+      ]},
+      { name: "Topological Sort", desc: "Kahn's algorithm, DFS-based topo, cycle detection.", challenges: [
+        {t:"Course Schedule II",d:"M"},{t:"Alien Dictionary",d:"H"},{t:"Sequence Reconstruction",d:"M"}
+      ]},
+      { name: "Shortest Paths", desc: "Dijkstra, Bellman-Ford, SPFA, Floyd-Warshall.", challenges: [
+        {t:"Network Delay Time",d:"M"},{t:"Cheapest Flights K Stops",d:"M"},{t:"Path with Min Effort",d:"M"},{t:"Minimum Cost to Reach City",d:"H"}
+      ]},
+      { name: "MST (Kruskal / Prim)", desc: "Union-Find with path compression, greedy MST.", challenges: [
+        {t:"Min Cost to Connect All Points",d:"M"},{t:"Optimize Water Distribution",d:"H"}
+      ]},
+      { name: "Advanced Graph", desc: "Tarjan SCC, bridges/articulation, Euler path, bipartite matching.", challenges: [
+        {t:"Critical Connections (Bridges)",d:"H"},{t:"Reconstruct Itinerary",d:"H"},{t:"Is Graph Bipartite?",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s5", num: "05", title: "Recursion & Backtracking", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "Recursion Patterns", desc: "Base case design, tail recursion, memoization of recursive calls.", challenges: [
+        {t:"Tower of Hanoi",d:"E"},{t:"Pow(x, n)",d:"M"},{t:"K-th Symbol in Grammar",d:"M"}
+      ]},
+      { name: "Backtracking", desc: "State-space trees, pruning, constraint propagation.", challenges: [
+        {t:"N-Queens",d:"H"},{t:"Sudoku Solver",d:"H"},{t:"Permutations II",d:"M"},{t:"Word Search",d:"M"},{t:"Subsets II",d:"M"},{t:"Combination Sum III",d:"M"}
+      ]},
+      { name: "Constraint Propagation", desc: "Arc consistency, forward checking, branching heuristics.", challenges: [
+        {t:"Generalized Sudoku (NxN)",d:"H"},{t:"Graph Coloring",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s6", num: "06", title: "Divide & Conquer", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "Core Paradigm", desc: "Master theorem, subproblem trees, merge step design.", challenges: [
+        {t:"Merge Sort (count inversions)",d:"M"},{t:"Closest Pair of Points",d:"H"},{t:"Median of Two Sorted Arrays",d:"H"}
+      ]},
+      { name: "Quick Select / BFPRT", desc: "Randomized pivot, worst-case linear selection.", challenges: [
+        {t:"Kth Largest in Array",d:"M"},{t:"Wiggle Sort II",d:"H"}
+      ]},
+      { name: "Fast Fourier Transform", desc: "Polynomial multiplication, convolution, NTT.", challenges: [
+        {t:"Multiply Strings (FFT approach)",d:"H"},{t:"Maximum Subarray (D&C version)",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s7", num: "07", title: "Greedy Algorithms", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "Greedy Proofs", desc: "Exchange argument, greedy stays ahead; when greedy fails.", challenges: [
+        {t:"Activity Selection",d:"E"},{t:"Jump Game II",d:"M"},{t:"Gas Station",d:"M"}
+      ]},
+      { name: "Interval Scheduling", desc: "Sweep line, interval merging, meeting rooms.", challenges: [
+        {t:"Meeting Rooms II",d:"M"},{t:"Non-Overlapping Intervals",d:"M"},{t:"Minimum Arrows Burst Balloons",d:"M"}
+      ]},
+      { name: "Greedy on Graphs", desc: "Prim's, Dijkstra's greedy insight, Huffman coding.", challenges: [
+        {t:"Huffman Encoding",d:"M"},{t:"Minimum Spanning Tree Variants",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s8", num: "08", title: "Dynamic Programming", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "1D DP", desc: "LIS, LCS subsequence, coin change, Fibonacci variants.", challenges: [
+        {t:"Longest Increasing Subsequence",d:"M"},{t:"Word Break",d:"M"},{t:"Decode Ways",d:"M"},{t:"House Robber II",d:"M"}
+      ]},
+      { name: "2D DP / Grid", desc: "Edit distance, unique paths, matrix chain multiplication.", challenges: [
+        {t:"Edit Distance",d:"H"},{t:"Dungeon Game",d:"H"},{t:"Maximal Square",d:"M"},{t:"Burst Balloons",d:"H"}
+      ]},
+      { name: "Interval DP", desc: "Palindrome partitioning, optimal BST, stone merge.", challenges: [
+        {t:"Minimum Cost to Merge Stones",d:"H"},{t:"Strange Printer",d:"H"},{t:"Predict the Winner",d:"M"}
+      ]},
+      { name: "DP on Trees", desc: "Tree DP, rerooting, DP on DAG.", challenges: [
+        {t:"Binary Tree Cameras",d:"H"},{t:"House Robber III",d:"M"},{t:"Maximum Path Sum",d:"H"}
+      ]},
+      { name: "Bitmask DP", desc: "TSP-style DP, subset enumeration, SOS DP.", challenges: [
+        {t:"Shortest Superstring",d:"H"},{t:"Partition to K Equal Subsets",d:"M"},{t:"Stickers to Spell Word",d:"H"}
+      ]},
+      { name: "DP + Data Structures", desc: "Segment tree DP, Li Chao tree, Convex Hull Trick.", challenges: [
+        {t:"Largest Divisible Subset",d:"M"},{t:"Russian Doll Envelopes",d:"H"},{t:"Divide Chocolate",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s9", num: "09", title: "Searching & Sorting", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "Binary Search Variants", desc: "Search on answer space, rotated arrays, fractional cascading.", challenges: [
+        {t:"Find in Mountain Array",d:"H"},{t:"Split Array Largest Sum",d:"H"},{t:"Kth Smallest in Sorted Matrix",d:"M"}
+      ]},
+      { name: "Sorting Algorithms", desc: "Tim sort, radix sort, counting sort; lower bounds.", challenges: [
+        {t:"Sort Colors (3-way partition)",d:"M"},{t:"Maximum Gap (radix sort)",d:"H"},{t:"Pancake Sorting",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s10", num: "10", title: "Two Pointers & Sliding Window", tag: "algo", tagLabel: "Algorithms",
+    topics: [
+      { name: "Two Pointer Patterns", desc: "Opposite ends, same direction, fast-slow (Floyd cycle).", challenges: [
+        {t:"3Sum",d:"M"},{t:"Container With Most Water",d:"M"},{t:"Trapping Rain Water",d:"H"}
+      ]},
+      { name: "Sliding Window", desc: "Variable-length window, monotonic deque window.", challenges: [
+        {t:"Minimum Window Substring",d:"H"},{t:"Longest Substring Without Repeating",d:"M"},{t:"Max Points from Cards",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s11", num: "11", title: "Statistical & Classical ML Algorithms", tag: "ml", tagLabel: "ML / DL / QML",
+    topics: [
+      { name: "MMSE & Bayesian Estimation", desc: "Minimum Mean Square Error, MAP vs ML estimators, Kalman filter.", challenges: [
+        {t:"Implement 1D Kalman Filter",d:"M"},{t:"Wiener Filter for Signal Denoising",d:"H"},{t:"Bayesian Linear Regression",d:"M"}
+      ]},
+      { name: "Linear / Logistic Regression", desc: "Normal equations, gradient descent, regularization, odds ratios.", challenges: [
+        {t:"Ridge Regression from Scratch",d:"M"},{t:"Logistic Regression with L1/L2",d:"M"},{t:"Multi-class Softmax",d:"M"}
+      ]},
+      { name: "SVM & Kernel Methods", desc: "Hard/soft margin, SMO algorithm, kernel trick, RBF.", challenges: [
+        {t:"SVM from Scratch (SMO)",d:"H"},{t:"Kernel PCA",d:"H"},{t:"Classify XOR with RBF Kernel",d:"M"}
+      ]},
+      { name: "Decision Trees & Ensembles", desc: "ID3/C4.5/CART, random forests, gradient boosting, XGBoost internals.", challenges: [
+        {t:"Implement CART Splitting",d:"M"},{t:"Build Random Forest",d:"M"},{t:"Gradient Boosted Regression",d:"H"}
+      ]},
+      { name: "Clustering & Dimensionality", desc: "k-Means, DBSCAN, PCA, t-SNE, UMAP; elbow method.", challenges: [
+        {t:"k-Means++ from Scratch",d:"M"},{t:"PCA on MNIST",d:"M"},{t:"Spectral Clustering",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s12", num: "12", title: "Neural Networks & Backpropagation", tag: "ml", tagLabel: "ML / DL / QML",
+    topics: [
+      { name: "Backpropagation", desc: "Computational graphs, chain rule, Jacobians, vanishing gradients.", challenges: [
+        {t:"Implement Backprop (2-layer NN)",d:"M"},{t:"Derive Gradient for Softmax+CE",d:"H"},{t:"Batch Norm Backward Pass",d:"H"}
+      ]},
+      { name: "Optimizers", desc: "SGD, momentum, RMSProp, Adam, AdaGrad, learning rate schedules.", challenges: [
+        {t:"Implement Adam from Scratch",d:"M"},{t:"Compare Optimizers on Rosenbrock",d:"M"},{t:"Implement Cosine Annealing",d:"M"}
+      ]},
+      { name: "Regularization & Generalization", desc: "Dropout, weight decay, early stopping, data augmentation, mixup.", challenges: [
+        {t:"Implement MC Dropout Inference",d:"M"},{t:"Label Smoothing Loss",d:"M"},{t:"Cutmix / Mixup Augmentation",d:"M"}
+      ]},
+      { name: "CNN Architectures", desc: "Conv2D, pooling, receptive field, ResNet/skip connections, depthwise.", challenges: [
+        {t:"Build ResNet-20 from Scratch",d:"H"},{t:"Custom Conv with Stride Dilation",d:"M"},{t:"Receptive Field Calculator",d:"M"}
+      ]},
+      { name: "RNN / LSTM / GRU", desc: "Vanishing gradient in RNNs, BPTT, gating mechanisms.", challenges: [
+        {t:"LSTM from Scratch (char-level LM)",d:"H"},{t:"Seq2Seq with Attention",d:"H"},{t:"BPTT Gradient Clipping",d:"M"}
+      ]},
+      { name: "Transformers & Attention", desc: "Scaled dot-product, multi-head, positional encoding, BERT/GPT.", challenges: [
+        {t:"Implement Self-Attention Block",d:"H"},{t:"Build Mini GPT",d:"H"},{t:"Rotary Positional Embeddings",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s13", num: "13", title: "Self-Supervised & Efficient DL", tag: "ml", tagLabel: "ML / DL / QML",
+    topics: [
+      { name: "Contrastive Learning", desc: "SimCLR, MoCo, NT-Xent loss, hard negative mining.", challenges: [
+        {t:"SimCLR Training Loop",d:"H"},{t:"Custom NT-Xent Loss",d:"M"},{t:"Linear Probe Evaluation",d:"M"}
+      ]},
+      { name: "Knowledge Distillation", desc: "Soft targets, temperature scaling, feature mimicking.", challenges: [
+        {t:"Distill ResNet→MobileNet",d:"H"},{t:"Temperature Sweep Analysis",d:"M"}
+      ]},
+      { name: "Quantization & Pruning", desc: "Post-training quantization, QAT, structured/unstructured pruning, STE.", challenges: [
+        {t:"Implement STE Quantization Layer",d:"H"},{t:"Magnitude Pruning + Fine-Tune",d:"M"},{t:"Ternary Weight Training",d:"H"}
+      ]},
+      { name: "Wavelet-based Feature Extraction", desc: "Haar/DWT as CNN layers, frequency-domain preprocess.", challenges: [
+        {t:"Haar DWT as Torch Layer",d:"M"},{t:"Wavelet Denoising Autoencoder",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s14", num: "14", title: "Operating Systems Algorithms", tag: "sys", tagLabel: "Systems",
+    topics: [
+      { name: "CPU Scheduling", desc: "FCFS, SJF, Round Robin, MLFQ, EDF; starvation & aging.", challenges: [
+        {t:"Simulate MLFQ Scheduler",d:"H"},{t:"Optimal Preemptive SJF",d:"M"},{t:"EDF Schedulability Test",d:"M"}
+      ]},
+      { name: "Memory Management", desc: "Page replacement (LRU, LFU, Clock), buddy system, slab allocator.", challenges: [
+        {t:"LFU Cache (O(1))",d:"H"},{t:"Simulate Buddy System Allocator",d:"H"},{t:"OPT Page Replacement",d:"M"}
+      ]},
+      { name: "Deadlock & Synchronization", desc: "Banker's algorithm, Peterson's, mutex, semaphore, monitors.", challenges: [
+        {t:"Implement Banker's Algorithm",d:"M"},{t:"Dining Philosophers (deadlock-free)",d:"H"},{t:"Readers-Writers Problem",d:"M"}
+      ]},
+      { name: "File System Algorithms", desc: "Disk scheduling (SSTF, SCAN, C-SCAN), inode design.", challenges: [
+        {t:"Simulate SCAN Disk Scheduler",d:"M"},{t:"Directory Tree with inodes",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s15", num: "15", title: "DBMS & Query Algorithms", tag: "sys", tagLabel: "Systems",
+    topics: [
+      { name: "B-Tree / B+Tree", desc: "Insertions, splits, range queries; comparison with LSM trees.", challenges: [
+        {t:"Implement B+Tree Insert/Search",d:"H"},{t:"Range Scan Simulation",d:"M"}
+      ]},
+      { name: "Query Optimization", desc: "Cost-based optimizer, join ordering, histogram selectivity.", challenges: [
+        {t:"Implement Hash Join",d:"M"},{t:"Nested Loop vs Merge Join Cost",d:"M"},{t:"Simple Query Planner",d:"H"}
+      ]},
+      { name: "Transactions & Concurrency", desc: "MVCC, 2PL, timestamp ordering, WAL, ARIES recovery.", challenges: [
+        {t:"Detect Deadlock in 2PL",d:"H"},{t:"Implement WAL Write-Ahead Log",d:"H"},{t:"Snapshot Isolation Anomalies",d:"M"}
+      ]},
+    ]
+  },
+  {
+    id: "s16", num: "16", title: "Networking Algorithms", tag: "sys", tagLabel: "Systems",
+    topics: [
+      { name: "Routing Algorithms", desc: "Link-state (Dijkstra), distance-vector (Bellman-Ford), BGP path.", challenges: [
+        {t:"Simulate OSPF (Dijkstra on graph)",d:"M"},{t:"RIP Convergence Simulation",d:"M"}
+      ]},
+      { name: "Congestion Control", desc: "TCP slow start, AIMD, CUBIC, BBR intuition.", challenges: [
+        {t:"Simulate TCP Slow Start",d:"M"},{t:"Model AIMD Fairness",d:"M"}
+      ]},
+      { name: "Distributed Consensus", desc: "Paxos, Raft, Byzantine fault tolerance, 2PC.", challenges: [
+        {t:"Implement Raft Leader Election",d:"H"},{t:"2-Phase Commit Protocol",d:"H"},{t:"Byzantine Generals Problem",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s17", num: "17", title: "Quantum & Probabilistic Algorithms", tag: "adv", tagLabel: "Advanced",
+    topics: [
+      { name: "Parameter Shift Rule", desc: "Gradient of quantum circuits, finite difference vs analytic shift.", challenges: [
+        {t:"Implement Parameter Shift on VQC",d:"H"},{t:"Compare PSR vs Finite Diff",d:"M"},{t:"Gradient on Hardware Noise",d:"H"}
+      ]},
+      { name: "Variational Quantum Algorithms", desc: "VQE, QAOA, ansatz design, barren plateaus.", challenges: [
+        {t:"VQE for H₂ Molecule (PennyLane)",d:"H"},{t:"QAOA Max-Cut",d:"H"},{t:"Barren Plateau Diagnosis",d:"H"}
+      ]},
+      { name: "Quantum ML", desc: "QNN, amplitude encoding, quantum kernel methods, HHL.", challenges: [
+        {t:"Quantum Kernel SVM",d:"H"},{t:"Amplitude Encoding for MNIST",d:"H"},{t:"HHL for Linear Systems",d:"H"}
+      ]},
+      { name: "Randomized Algorithms", desc: "Monte Carlo, Las Vegas, randomized quicksort, Bloom filters.", challenges: [
+        {t:"Bloom Filter from Scratch",d:"M"},{t:"Randomized Primality (Miller-Rabin)",d:"M"},{t:"Skip List Implementation",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s18", num: "18", title: "DNA / Bio-Inspired Algorithms", tag: "adv", tagLabel: "Advanced",
+    topics: [
+      { name: "String Matching (Genomics)", desc: "BWT, FM-index, suffix arrays, Smith-Waterman, Needleman-Wunsch.", challenges: [
+        {t:"Build Suffix Array",d:"H"},{t:"Smith-Waterman Alignment",d:"H"},{t:"BWT Transform & Inversion",d:"H"}
+      ]},
+      { name: "Evolutionary Algorithms", desc: "Genetic algorithms, selection/crossover/mutation, CMA-ES.", challenges: [
+        {t:"GA for TSP",d:"H"},{t:"CMA-ES on Rastrigin Function",d:"H"},{t:"NEAT for CartPole",d:"H"}
+      ]},
+    ]
+  },
+  {
+    id: "s19", num: "19", title: "Computing Theory & Complexity", tag: "adv", tagLabel: "Advanced",
+    topics: [
+      { name: "Complexity Classes", desc: "P, NP, NP-Hard, NP-Complete; reductions, Cook-Levin.", challenges: [
+        {t:"Prove 3-SAT → Vertex Cover",d:"H"},{t:"Approximation for Set Cover",d:"M"},{t:"2-SAT (Polynomial)",d:"M"}
+      ]},
+      { name: "Amortized Analysis", desc: "Aggregate, accounting, potential methods; splay trees.", challenges: [
+        {t:"Amortized Analysis of Dynamic Array",d:"M"},{t:"Splay Tree Amortized O(log n)",d:"H"}
+      ]},
+      { name: "Online Algorithms", desc: "Competitive ratio, ski rental, paging, online matching.", challenges: [
+        {t:"Ski Rental Problem",d:"M"},{t:"Online Bipartite Matching",d:"H"},{t:"k-Server Problem",d:"H"}
+      ]},
+    ]
+  },
+];
+
+// State
+const state = JSON.parse(sessionStorage.getItem('syllabusState') || '{}');
+
+function saveState() {
+  sessionStorage.setItem('syllabusState', JSON.stringify(state));
+}
+
+function toggleTopic(sId, tIdx) {
+  const key = `${sId}-${tIdx}`;
+  state[key] = !state[key];
+  saveState();
+  updateAll();
+}
+
+function toggleChallenge(sId, tIdx, cIdx) {
+  const key = `c-${sId}-${tIdx}-${cIdx}`;
+  state[key] = !state[key];
+  saveState();
+  updateAll();
+}
+
+function toggleExpand(cardEl) {
+  cardEl.classList.toggle('expanded');
+}
+
+function updateAll() {
+  let total = 0, done = 0;
+  data.forEach(s => {
+    s.topics.forEach((t, ti) => {
+      total++;
+      const key = `${s.id}-${ti}`;
+      const card = document.querySelector(`[data-key="${key}"]`);
+      if (!card) return;
+      if (state[key]) {
+        card.classList.add('done');
+        card.querySelector('.checkbox').textContent = '✓';
+        done++;
+      } else {
+        card.classList.remove('done');
+        card.querySelector('.checkbox').textContent = '';
+      }
+      t.challenges.forEach((c, ci) => {
+        const cKey = `c-${s.id}-${ti}-${ci}`;
+        const cEl = card.querySelector(`[data-ckey="${cKey}"]`);
+        if (!cEl) return;
+        if (state[cKey]) cEl.classList.add('c-done');
+        else cEl.classList.remove('c-done');
+      });
+    });
+  });
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${done} / ${total} topics completed (${pct}%)`;
+}
+
+function filterTag(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => {
+    s.style.display = (s.dataset.tag === tag) ? '' : 'none';
+  });
+}
+
+function filterAll(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.style.display = '');
+}
+
+function render() {
+  const container = document.getElementById('syllabus');
+  container.innerHTML = '';
+
+  data.forEach((s, si) => {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.dataset.tag = s.tag;
+    sec.style.animationDelay = (si * 0.06) + 's';
+
+    const tagClass = `tag-${s.tag}`;
+    sec.innerHTML = `
+      <div class="section-header">
+        <span class="section-num">${s.num}</span>
+        <span class="section-title">${s.title}</span>
+        <span class="section-tag ${tagClass}">${s.tagLabel}</span>
+      </div>
+      <div class="cards" id="cards-${s.id}"></div>
+    `;
+    container.appendChild(sec);
+
+    const cardsEl = sec.querySelector(`#cards-${s.id}`);
+    s.topics.forEach((t, ti) => {
+      const key = `${s.id}-${ti}`;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.key = key;
+
+      const challengesHTML = t.challenges.map((c, ci) => {
+        const cKey = `c-${s.id}-${ti}-${ci}`;
+        return `<div class="challenge-item" data-ckey="${cKey}" onclick="event.stopPropagation(); toggleChallenge('${s.id}', ${ti}, ${ci})">
+          <div class="c-dot"></div>
+          <span>${c.t}</span>
+          <span class="diff-badge diff-${c.d}" style="margin-left:auto">${c.d==='E'?'Easy':c.d==='M'?'Med':'Hard'}</span>
+        </div>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-name">${t.name}</div>
+          <div class="checkbox" onclick="event.stopPropagation(); toggleTopic('${s.id}', ${ti})"></div>
+        </div>
+        <div class="card-desc">${t.desc}</div>
+        <div style="font-size:9px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer" onclick="toggleExpand(this.closest('.card'))">▸ ${t.challenges.length} challenges</div>
+        <div class="card-challenges">
+          <h4>Learning Challenges</h4>
+          ${challengesHTML}
+        </div>
+      `;
+      cardsEl.appendChild(card);
+    });
+  });
+
+  updateAll();
+}
+
+render();
+</script>
+</body>
+</html>
