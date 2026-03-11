@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Algorithm & Systems Syllabus</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080810;--surface:#0e0e1a;--card:#12121e;--card2:#161624;
+  --border:#222235;--border2:#2e2e48;
+  --a1:#7c6af7;--a2:#f97316;--a3:#22d3ee;--a4:#a3e635;--a5:#fb7185;--a6:#fbbf24;
+  --text:#eeeef8;--muted:#5a5a78;--muted2:#8888aa;
+  --done:#22c55e;--done-bg:rgba(34,197,94,0.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,106,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(124,106,247,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(34,211,238,.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.wrap{max-width:1340px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+header{padding:64px 28px 0;text-align:center;position:relative;z-index:1;}
+.htag{display:inline-flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.35em;color:var(--a1);border:1px solid rgba(124,106,247,.35);padding:5px 16px;margin-bottom:24px;text-transform:uppercase;}
+.htag::before{content:'';width:6px;height:6px;background:var(--a1);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.6);}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;}
+h1 em{font-style:normal;color:var(--a1);}h1 b{font-weight:800;color:var(--a3);}
+.hdesc{margin-top:14px;color:var(--muted2);font-size:11.5px;letter-spacing:.04em;line-height:1.8;}
+.stats-bar{display:flex;gap:0;margin:40px auto 0;max-width:860px;border:1px solid var(--border);background:var(--surface);overflow:hidden;}
+.stat{flex:1;padding:18px 20px;border-right:1px solid var(--border);text-align:center;}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1;}
+.stat-lbl{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.prog-wrap{margin:32px auto 0;max-width:860px;}
+.prog-track{background:var(--surface);border:1px solid var(--border);height:8px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a3));width:0;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.prog-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:8px;padding:0 2px;}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:32px 28px 0;position:relative;z-index:1;}
+.search-wrap{position:relative;flex:1;min-width:220px;}
+.search-wrap::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none;}
+.search-box{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:9px 14px 9px 36px;outline:none;transition:border-color .2s;}
+.search-box:focus{border-color:var(--a1);}
+.filters{display:flex;gap:8px;flex-wrap:wrap;}
+.fbtn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 15px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.fbtn:hover,.fbtn.on{border-color:var(--a1);color:var(--a1);background:rgba(124,106,247,.09);}
+.view-btns{display:flex;gap:4px;margin-left:auto;}
+.vbtn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:7px 12px;cursor:pointer;font-size:11px;transition:all .2s;}
+.vbtn.on,.vbtn:hover{border-color:var(--a3);color:var(--a3);}
+.sort-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:14px 28px 0;position:relative;z-index:1;}
+.sort-lbl{font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;}
+.sbtn{background:transparent;border:none;color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;padding:4px 8px;border-bottom:1px solid transparent;transition:all .2s;}
+.sbtn:hover,.sbtn.on{color:var(--a6);border-bottom-color:var(--a6);}
+.hide-done-btn{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;padding:5px 12px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.hide-done-btn:hover,.hide-done-btn.on{border-color:var(--done);color:var(--done);}
+.section{margin-bottom:52px;opacity:0;transform:translateY(16px);animation:fadeUp .45s ease forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.sec-hdr{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:12px 0;border-bottom:1px solid var(--border);}
+.sec-num{font-family:'Syne',sans-serif;font-size:10px;color:var(--muted);min-width:26px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:-.01em;}
+.sec-count{font-size:9px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:2px 8px;border-radius:20px;}
+.sec-tag{margin-left:auto;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;padding:3px 10px;}
+.t-ds{background:rgba(124,106,247,.12);color:var(--a1);border:1px solid rgba(124,106,247,.25);}
+.t-algo{background:rgba(249,115,22,.12);color:var(--a2);border:1px solid rgba(249,115,22,.25);}
+.t-ml{background:rgba(34,211,238,.1);color:var(--a3);border:1px solid rgba(34,211,238,.25);}
+.t-sys{background:rgba(163,230,53,.1);color:var(--a4);border:1px solid rgba(163,230,53,.25);}
+.t-adv{background:rgba(251,191,36,.1);color:var(--a6);border:1px solid rgba(251,191,36,.25);}
+.t-math{background:rgba(251,113,133,.1);color:var(--a5);border:1px solid rgba(251,113,133,.25);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.cards.lv{grid-template-columns:1fr;}
+.card{background:var(--card);border:1px solid var(--border);padding:18px 20px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent);opacity:0;transition:opacity .3s;}
+.card:hover{border-color:var(--border2);background:var(--card2);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.card:hover::after{opacity:.6;}
+.card.done{border-color:rgba(34,197,94,.3);background:var(--done-bg);}
+.card.done::after{background:linear-gradient(90deg,transparent,var(--done),transparent);opacity:.4;}
+.card.hidden{display:none;}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px;}
+.card-name{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;line-height:1.25;flex:1;}
+.cb{width:20px;height:20px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-size:11px;cursor:pointer;}
+.card.done .cb{background:var(--done);border-color:var(--done);color:#000;}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.ctag{font-size:8px;letter-spacing:.12em;padding:2px 7px;border-radius:2px;text-transform:uppercase;}
+.ct-time{background:rgba(251,191,36,.1);color:var(--a6);border:1px solid rgba(251,191,36,.2);}
+.ct-prereq{background:rgba(251,113,133,.1);color:var(--a5);border:1px solid rgba(251,113,133,.2);}
+.ct-concept{background:rgba(124,106,247,.1);color:var(--a1);border:1px solid rgba(124,106,247,.2);}
+.card-desc{font-size:10.5px;color:var(--muted2);line-height:1.65;margin-bottom:10px;}
+.key-ideas{background:rgba(124,106,247,.05);border-left:2px solid var(--a1);padding:8px 12px;margin-bottom:10px;font-size:10px;color:var(--muted2);line-height:1.7;}
+.key-ideas strong{color:var(--a1);font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:3px;}
+.expand-row{display:flex;align-items:center;justify-content:space-between;font-size:9px;color:var(--a1);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding-top:8px;border-top:1px solid var(--border);user-select:none;}
+.expand-row .arr{transition:transform .25s;}
+.card.expanded .expand-row .arr{transform:rotate(90deg);}
+.challenges{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.card.expanded .challenges{display:block;}
+.ch-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ch-hdr h4{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--a2);}
+.ch-stats{font-size:9px;color:var(--muted);}
+.ch-item{display:flex;align-items:flex-start;gap:9px;padding:7px 6px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s;border-radius:2px;}
+.ch-item:last-child{border-bottom:none;}
+.ch-item:hover{background:rgba(255,255,255,.03);}
+.ch-dot{width:6px;height:6px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;margin-top:5px;transition:all .2s;}
+.ch-item.c-done .ch-dot{background:var(--done);border-color:var(--done);}
+.ch-item.c-done .ch-text{text-decoration:line-through;opacity:.4;}
+.ch-text{font-size:10.5px;line-height:1.4;flex:1;}
+.ch-meta{display:flex;gap:5px;align-items:center;flex-shrink:0;}
+.diff{font-size:7.5px;letter-spacing:.1em;padding:2px 6px;text-transform:uppercase;}
+.dE{background:rgba(34,197,94,.12);color:#22c55e;}
+.dM{background:rgba(251,191,36,.12);color:#fbbf24;}
+.dH{background:rgba(239,68,68,.12);color:#ef4444;}
+.dX{background:rgba(251,113,133,.12);color:#fb7185;}
+.ch-type{font-size:7.5px;letter-spacing:.08em;padding:2px 6px;background:rgba(124,106,247,.08);color:var(--a1);}
+.notes-area{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--muted2);font-family:'JetBrains Mono',monospace;font-size:10px;padding:8px 10px;margin-top:10px;resize:vertical;min-height:50px;outline:none;transition:border-color .2s;line-height:1.6;}
+.notes-area:focus{border-color:var(--a1);color:var(--text);}
+.notes-area::placeholder{color:var(--muted);}
+.empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:12px;letter-spacing:.05em;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:28px 28px 0;font-size:9.5px;color:var(--muted);position:relative;z-index:1;}
+.leg{display:flex;align-items:center;gap:6px;}
+.ldot{width:8px;height:8px;border-radius:50%;}
+.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(8,8,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;transform:translateY(-100%);transition:transform .3s;}
+.sticky-nav.vis{transform:translateY(0);}
+.snav-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-right:8px;color:var(--a1);}
+.snav-link{font-size:9px;letter-spacing:.1em;color:var(--muted);cursor:pointer;padding:3px 8px;border:1px solid transparent;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.snav-link:hover{color:var(--a1);border-color:rgba(124,106,247,.3);}
+footer{text-align:center;padding:60px 28px 40px;font-size:9.5px;color:var(--muted);letter-spacing:.08em;line-height:1.8;}
+::-webkit-scrollbar{width:6px;height:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--a1);}
+@media(max-width:640px){.stats-bar{flex-wrap:wrap;}.stat{flex:1 1 40%;}.controls{gap:8px;}h1{font-size:2rem;}}
+</style>
+</head>
+<body>
+
+<div class="sticky-nav" id="sNav"><span class="snav-title">§ Syllabus</span></div>
+
+<header>
+  <div class="htag">// master syllabus · advanced intermediate · v2.0</div>
+  <h1><em>Algorithm</em> &amp; <b>Systems</b><br>Mastery Roadmap</h1>
+  <p class="hdesc">DSA · Algorithms · ML/DL/QML · OS/DBMS · Networking · DNA · Quantum · Complexity<br>problem-first · thinking-first · publication-ready</p>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="stT" style="color:var(--a1)">—</div><div class="stat-lbl">Topics</div></div>
+    <div class="stat"><div class="stat-num" id="stC" style="color:var(--a2)">—</div><div class="stat-lbl">Challenges</div></div>
+    <div class="stat"><div class="stat-num" id="stH" style="color:var(--a3)">—</div><div class="stat-lbl">Est. Hours</div></div>
+    <div class="stat"><div class="stat-num" id="stD" style="color:var(--done)">0</div><div class="stat-lbl">Completed</div></div>
+    <div class="stat"><div class="stat-num" id="stP" style="color:var(--a6)">0%</div><div class="stat-lbl">Progress</div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="pFill"></div></div>
+    <div class="prog-meta"><span id="pLeft">—</span><span id="pPct">0%</span></div>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="leg"><div class="ldot" style="background:var(--a1)"></div>Data Structures</div>
+  <div class="leg"><div class="ldot" style="background:var(--a2)"></div>Algorithms</div>
+  <div class="leg"><div class="ldot" style="background:var(--a3)"></div>ML/DL/QML</div>
+  <div class="leg"><div class="ldot" style="background:var(--a4)"></div>Systems</div>
+  <div class="leg"><div class="ldot" style="background:var(--a6)"></div>Advanced</div>
+  <div class="leg"><div class="ldot" style="background:var(--a5)"></div>Math/Theory</div>
+  <div class="leg"><div class="ldot" style="background:#22c55e"></div>Easy</div>
+  <div class="leg"><div class="ldot" style="background:#fbbf24"></div>Medium</div>
+  <div class="leg"><div class="ldot" style="background:#ef4444"></div>Hard</div>
+  <div class="leg"><div class="ldot" style="background:#fb7185"></div>Research</div>
+</div>
+
+<div class="controls wrap">
+  <div class="search-wrap">
+    <input class="search-box" id="sBox" placeholder="search topics, concepts, challenges…" oninput="doSearch()">
+  </div>
+  <div class="filters" id="filters">
+    <button class="fbtn on" onclick="setF('all',this)">All</button>
+    <button class="fbtn" onclick="setF('ds',this)">DSA</button>
+    <button class="fbtn" onclick="setF('algo',this)">Algorithms</button>
+    <button class="fbtn" onclick="setF('ml',this)">ML/DL/QML</button>
+    <button class="fbtn" onclick="setF('sys',this)">Systems</button>
+    <button class="fbtn" onclick="setF('adv',this)">Advanced</button>
+    <button class="fbtn" onclick="setF('math',this)">Math/Theory</button>
+  </div>
+  <div class="view-btns">
+    <button class="vbtn on" id="vG" onclick="setV('grid')">⊞</button>
+    <button class="vbtn" id="vL" onclick="setV('list')">☰</button>
+  </div>
+</div>
+
+<div class="sort-row wrap">
+  <span class="sort-lbl">Sort:</span>
+  <button class="sbtn on" onclick="setS('order',this)">Default</button>
+  <button class="sbtn" onclick="setS('alpha',this)">A→Z</button>
+  <button class="sbtn" onclick="setS('time',this)">Time Est.</button>
+  <button class="sbtn" onclick="setS('chal',this)"># Challenges</button>
+  <button class="hide-done-btn" id="hdBtn" onclick="toggleHD()">Hide Completed</button>
+</div>
+
+<div class="wrap" id="syl" style="padding-top:28px;"></div>
+
+<footer>click card to expand · ☐ checkbox = mark topic done · dot = mark challenge done<br>notes auto-save · search + filters to navigate 25 sections · ~500h of learning material</footer>
+
+<script>
+const D=[
+  {id:'s01',num:'01',title:'Arrays & Strings',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Two Pointer & Sliding Window',time:8,prereq:'Arrays',concepts:['amortization','monotonic deque','window invariant'],desc:'Variable/fixed window, opposite-direction pointers, deque-optimized windows. Core for O(n) string/array problems.',keys:'Window invariant design · shrink/expand logic · when two-pointer fails',challenges:[
+      {t:'Minimum Window Substring',d:'H',type:'String'},{t:'Trapping Rain Water',d:'H',type:'Array'},{t:'Longest Substring Without Repeating',d:'M',type:'String'},{t:'Max Consecutive Ones III',d:'M',type:'Sliding'},{t:'Fruit Into Baskets',d:'M',type:'Sliding'},{t:'Sliding Window Maximum (deque)',d:'H',type:'Deque'},{t:'Count Subarrays with K Distinct',d:'H',type:'Sliding'},{t:'Minimum Size Subarray Sum',d:'M',type:'Sliding'}]},
+    {name:'Prefix Sum & Difference Array',time:5,prereq:'Arrays',concepts:['offline queries','range update','2D prefix'],desc:'1D/2D prefix sums, difference arrays for range updates, offline range query processing.',keys:'2D prefix sum construction · difference array trick · modular prefix XOR',challenges:[
+      {t:'Subarray Sum Equals K',d:'M',type:'PrefixSum'},{t:'Range Sum Query 2D – Mutable',d:'M',type:'2D'},{t:'Product of Array Except Self',d:'M',type:'Array'},{t:'Count of Range Sum',d:'H',type:'PrefixSum'},{t:'Corporate Flight Bookings (diff array)',d:'M',type:'DiffArray'}]},
+    {name:'Sorting Algorithms Deep Dive',time:7,prereq:'none',concepts:['stability','lower bounds','Tim sort'],desc:'Merge sort, quicksort (3-way partition), heap sort, radix/counting sort. Lower bound Ω(n log n) proof and introsort.',keys:'Introsort hybrid · Tim sort gap-run merging · why comparison sorts ≥ Ω(n log n)',challenges:[
+      {t:'Sort Colors (Dutch National Flag)',d:'M',type:'Partition'},{t:'Maximum Gap (radix sort)',d:'H',type:'Linear'},{t:'Count Inversions (merge sort)',d:'M',type:'MergeSort'},{t:'Wiggle Sort II',d:'H',type:'Partition'},{t:'Pancake Sort',d:'M',type:'Creative'}]},
+    {name:'Binary Search on Answer Space',time:6,prereq:'Sorting',concepts:['monotone predicate','feasibility function'],desc:'Binary search beyond sorted arrays: search on answer space, parametric search, fractional cascading.',keys:'Identify monotone predicate · lo/hi boundary bugs · float BS with eps',challenges:[
+      {t:'Find in Mountain Array',d:'H',type:'BS'},{t:'Split Array Largest Sum',d:'H',type:'BS-Answer'},{t:'Kth Smallest in Sorted Matrix',d:'M',type:'BS'},{t:'Median of Two Sorted Arrays',d:'H',type:'BS'},{t:'Koko Eating Bananas',d:'M',type:'BS-Answer'},{t:'Minimise Maximum Distance',d:'H',type:'BS-Answer'}]},
+  ]},
+  {id:'s02',num:'02',title:'Stack & Queue',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Monotonic Stack',time:6,prereq:'Stack',concepts:['NGE pattern','span calculation','histogram'],desc:'Next greater/smaller element, histogram problems, online stock span. Core pattern for O(n) range queries without segment trees.',keys:'Push/pop invariant · increasing vs decreasing stack · combine with DP',challenges:[
+      {t:'Largest Rectangle in Histogram',d:'H',type:'MonoStack'},{t:'Daily Temperatures',d:'M',type:'MonoStack'},{t:'Remove K Digits',d:'M',type:'MonoStack'},{t:'Sum of Subarray Minimums',d:'H',type:'MonoStack'},{t:'Maximal Rectangle',d:'H',type:'MonoStack'},{t:'Stock Span Problem',d:'M',type:'MonoStack'},{t:'Number of Visible People in Queue',d:'H',type:'MonoStack'}]},
+    {name:'Stack for Parsing & Expression',time:5,prereq:'Stack',concepts:['shunting yard','postfix','operator precedence'],desc:'Infix→postfix, expression evaluation, bracket matching, decode string, basic calculator.',keys:'Operator precedence handling · recursive descent parser alternative',challenges:[
+      {t:'Basic Calculator II',d:'M',type:'Parse'},{t:'Decode String',d:'M',type:'Parse'},{t:'Valid Parentheses',d:'E',type:'Stack'},{t:'Evaluate Reverse Polish Notation',d:'M',type:'Parse'},{t:'Tag Validator',d:'H',type:'Parse'},{t:'Asteroid Collision',d:'M',type:'Stack'}]},
+    {name:'Monotonic Deque & Queue Variants',time:5,prereq:'Queue,Stack',concepts:['amortization','circular buffer','design'],desc:'Sliding window max/min, k-limited deque, circular buffer design, LRU internals.',keys:'Amortized O(1) push/pop · deque invariant for window extremes',challenges:[
+      {t:'Sliding Window Maximum',d:'H',type:'Deque'},{t:'Jump Game VI (deque DP)',d:'H',type:'Deque'},{t:'First Non-Repeating in Stream',d:'M',type:'Queue'},{t:'Design Circular Deque',d:'M',type:'Design'}]},
+  ]},
+  {id:'s03',num:'03',title:'Linked List',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Fast-Slow Pointer Patterns',time:5,prereq:'LinkedList',concepts:["Floyd's cycle",'middle finding','duplicate detection'],desc:"Floyd's tortoise & hare for cycle detection, cycle entry, finding middle, palindrome check, duplicate in array.",keys:'Why 2x speed finds entry point · apply same idea to arrays',challenges:[
+      {t:'Linked List Cycle II (entry point)',d:'M',type:'FastSlow'},{t:'Find the Duplicate Number',d:'M',type:'FastSlow'},{t:'Happy Number',d:'E',type:'FastSlow'},{t:'Reorder List',d:'M',type:'FastSlow'},{t:'Palindrome Linked List',d:'E',type:'FastSlow'}]},
+    {name:'Reversal & Restructuring',time:6,prereq:'LinkedList',concepts:['in-place reversal','k-group','merge'],desc:'Reverse entire list, k-group reversal, rotate, interleave merged sorted lists.',keys:'Dummy node + prev/curr/next · recursive vs iterative reversal',challenges:[
+      {t:'Reverse Nodes in k-Group',d:'H',type:'Reversal'},{t:'Rotate List',d:'M',type:'Restructure'},{t:'Odd Even Linked List',d:'M',type:'Restructure'},{t:'Merge K Sorted Lists',d:'H',type:'Merge'},{t:'Swap Nodes in Pairs',d:'M',type:'Reversal'}]},
+  ]},
+  {id:'s04',num:'04',title:'Hash Map & Hash Design',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Hashing Internals',time:6,prereq:'none',concepts:['chaining','open addressing','rolling hash','Robin Hood'],desc:'Chaining, open addressing, Robin Hood hashing, cuckoo hashing. Rolling hash (Rabin-Karp) for substring matching.',keys:'Why load factor matters · polynomial rolling hash mod arithmetic · anti-hash test data',challenges:[
+      {t:'Design HashMap from Scratch',d:'M',type:'Design'},{t:'Rabin-Karp Substring Search',d:'M',type:'Hash'},{t:'Group Anagrams',d:'M',type:'HashMap'},{t:'Longest Consecutive Sequence',d:'M',type:'HashSet'},{t:'Subarray Sum Equals K',d:'M',type:'PrefixHash'}]},
+    {name:'Advanced HashMap Patterns',time:5,prereq:'HashMap',concepts:['frequency counting','two-pass','multi-key'],desc:'Frequency maps, complement lookups, multi-key grouping, all O(1) design problems.',keys:'Two-sum generalizations · design with O(1) insert/delete/getRandom',challenges:[
+      {t:'4Sum II',d:'M',type:'HashMap'},{t:'Top K Frequent Elements',d:'M',type:'Bucket'},{t:'LRU Cache',d:'M',type:'Design'},{t:'All O(1) Data Structure',d:'H',type:'Design'},{t:'Insert Delete GetRandom O(1)',d:'M',type:'Design'},{t:'Snapshot Array',d:'M',type:'Design'}]},
+  ]},
+  {id:'s05',num:'05',title:'Trees – Core',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Binary Tree Traversals',time:6,prereq:'Tree',concepts:['Morris traversal','iterative DFS','level-order'],desc:'Iterative inorder/preorder/postorder, Morris (O(1) space), level-order BFS, vertical/diagonal traversals.',keys:'Morris links trick · zigzag BFS implementation · boundary traversal',challenges:[
+      {t:'Binary Tree Zigzag Level Order',d:'M',type:'BFS'},{t:'Serialize & Deserialize BT',d:'H',type:'Traversal'},{t:'Vertical Order Traversal',d:'H',type:'Traversal'},{t:'Recover BST (Morris)',d:'H',type:'Morris'},{t:'Boundary of Binary Tree',d:'M',type:'Traversal'},{t:'Flatten BT to Linked List',d:'M',type:'Traversal'}]},
+    {name:'BST Properties & Augmentation',time:7,prereq:'BST',concepts:['LCA','augmentation','order statistics'],desc:'Search/insert/delete, LCA, successor/predecessor, augmented BST (OS-tree, interval tree).',keys:'Why inorder of BST is sorted · OS-Tree for k-th in O(log n) · interval tree stabbing query',challenges:[
+      {t:'Kth Smallest in BST',d:'M',type:'BST'},{t:'LCA of BST',d:'E',type:'BST'},{t:'Count of Smaller Numbers After Self',d:'H',type:'Augmented'},{t:'Floor & Ceil in BST',d:'M',type:'BST'},{t:'Validate BST',d:'M',type:'BST'},{t:'Balance a BST',d:'M',type:'BST'}]},
+    {name:'Trie (Prefix Tree)',time:7,prereq:'Tree',concepts:['compressed trie','XOR trie','Aho-Corasick'],desc:'Standard trie, wildcard search, XOR trie (max XOR), compressed trie. Aho-Corasick for multi-pattern.',keys:'Space optimization with hashmaps · XOR trie for bit problems',challenges:[
+      {t:'Word Search II (Trie+DFS)',d:'H',type:'Trie'},{t:'Design Search Autocomplete System',d:'H',type:'Design'},{t:'Maximum XOR of Two Numbers',d:'M',type:'XORTrie'},{t:'Replace Words',d:'M',type:'Trie'},{t:'Magic Dictionary (wildcard)',d:'M',type:'Trie'},{t:'Concatenated Words',d:'H',type:'Trie'}]},
+    {name:'Segment Tree & Binary Indexed Tree',time:9,prereq:'Arrays',concepts:['lazy propagation','BIT','persistent ST'],desc:'Point/range update, range query, lazy propagation, persistent segment tree, 2D BIT.',keys:'Build vs update cost · when BIT suffices vs full seg tree · merge sort tree for queries',challenges:[
+      {t:'Range Sum Query – Mutable (BIT)',d:'M',type:'BIT'},{t:'Count of Range Sum',d:'H',type:'MergeSortTree'},{t:'Falling Squares',d:'H',type:'SegTree'},{t:'Range Min Query with Lazy Propagation',d:'H',type:'LazyProp'},{t:'Number of Longest Increasing Subsequences',d:'M',type:'BIT'}]},
+    {name:'AVL / Red-Black / Skip Lists',time:8,prereq:'BST',concepts:['rotations','amortized balance','probabilistic'],desc:'AVL rotations, RB tree invariants, skip list probabilistic balance. Self-balancing guarantees compared.',keys:'Double rotation in AVL · RB coloring invariants · skip list expected O(log n) height',challenges:[
+      {t:'Implement AVL Insert/Delete',d:'H',type:'AVL'},{t:'Implement Randomized Skip List',d:'H',type:'Probabilistic'},{t:'Count Smaller After Self (BST aug)',d:'H',type:'Augmented'}]},
+  ]},
+  {id:'s06',num:'06',title:'Heap & Priority Queue',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Heap Patterns',time:6,prereq:'Arrays',concepts:['k-way merge','lazy deletion','two-heap'],desc:'Top-k, k-way merge, median stream, scheduling. Lazy deletion for efficient decrease-key.',keys:'Heap vs BST for dynamic k-th · two-heap median maintenance trick',challenges:[
+      {t:'Find Median from Data Stream',d:'H',type:'TwoHeap'},{t:'Merge K Sorted Lists',d:'H',type:'KWayMerge'},{t:'Kth Largest in Stream',d:'E',type:'Heap'},{t:'Task Scheduler',d:'M',type:'Greedy+Heap'},{t:'IPO – Maximize Capital',d:'H',type:'TwoHeap'},{t:'Smallest Range Covering K Lists',d:'H',type:'Heap'}]},
+    {name:'Advanced Heap Structures',time:7,prereq:'Heap',concepts:['fibonacci heap','binomial heap','decrease-key'],desc:'Fibonacci heap (amortized O(1) decrease-key), binomial heap. Impact on Dijkstra, Prim complexity.',keys:'Why Fib heap improves Dijkstra to O(E + V log V) · binomial merge O(log n)',challenges:[
+      {t:'Implement Min Heap from Scratch',d:'M',type:'Heap'},{t:'Analyze Fibonacci Heap Ops',d:'H',type:'Theory'},{t:'Median Maintenance with 2 heaps',d:'M',type:'Design'}]},
+  ]},
+  {id:'s07',num:'07',title:'Graphs – Foundations',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Graph Representation & BFS/DFS',time:8,prereq:'Queue,Stack',concepts:['implicit graphs','multi-source BFS','0-1 BFS'],desc:'Adjacency list/matrix, edge list. BFS: shortest unweighted/0-1 BFS. DFS: components, bipartite, bridges.',keys:'When BFS vs DFS · 0-1 BFS (deque) · bidirectional BFS halves search space',challenges:[
+      {t:'Word Ladder (BFS)',d:'H',type:'BFS'},{t:'Pacific Atlantic Water Flow',d:'M',type:'DFS'},{t:'Rotting Oranges (multi-src BFS)',d:'M',type:'BFS'},{t:'Shortest Bridge (BFS+DFS)',d:'M',type:'Hybrid'},{t:'01 Matrix',d:'M',type:'MultisrcBFS'},{t:'Minimum Steps to Reach Target (0-1 BFS)',d:'M',type:'01BFS'}]},
+    {name:'Topological Sort',time:6,prereq:'Graph',concepts:["Kahn's","DFS topo",'cycle detection'],desc:"Kahn's BFS topo, DFS reverse post-order, cycle detection, lexicographically smallest.",keys:'Unique topo order detection · cycle in directed vs undirected',challenges:[
+      {t:'Course Schedule II',d:'M',type:'Topo'},{t:'Alien Dictionary',d:'H',type:'Topo'},{t:'Parallel Courses (min time)',d:'M',type:'Topo'},{t:'Sequence Reconstruction (unique topo)',d:'M',type:'Topo'},{t:'Sort Items by Groups Respecting Deps',d:'H',type:'Topo'}]},
+    {name:'Union-Find (DSU)',time:6,prereq:'none',concepts:['path compression','union by rank','DSU on tree'],desc:'Path compression + union by rank → nearly O(1). Offline dynamic connectivity, DSU on tree.',keys:'Inverse Ackermann α(n) amortized cost · DSU on tree = small-to-large merging',challenges:[
+      {t:'Number of Provinces',d:'M',type:'DSU'},{t:'Redundant Connection',d:'M',type:'DSU'},{t:'Accounts Merge',d:'M',type:'DSU'},{t:'Swim in Rising Water',d:'H',type:'DSU'},{t:'Making a Large Island',d:'H',type:'DSU'},{t:'Remove Max Edges (bipartite+general)',d:'H',type:'DSU'}]},
+  ]},
+  {id:'s08',num:'08',title:'Graphs – Advanced',tag:'ds',tagLabel:'Data Structures',topics:[
+    {name:'Shortest Path Algorithms',time:9,prereq:'Heap,Graph',concepts:['relaxation','negative cycles','APSP','Johnson'],desc:'Dijkstra, Bellman-Ford, SPFA, Floyd-Warshall, Johnson\'s reweighting for APSP with negatives.',keys:'Why Dijkstra fails with neg edges · Johnson\'s reweighting trick · detect neg cycle',challenges:[
+      {t:'Network Delay Time (Dijkstra)',d:'M',type:'Dijkstra'},{t:'Cheapest Flights Within K Stops',d:'M',type:'BellmanFord'},{t:'Path with Min Effort',d:'M',type:'Dijkstra'},{t:'Find City Fewest Neighbors (Floyd)',d:'M',type:'APSP'},{t:'Minimum Cost to Make Graph Connected',d:'H',type:'MST'}]},
+    {name:'MST: Kruskal & Prim',time:6,prereq:'DSU,Heap',concepts:['cut property','cycle property','Borůvka'],desc:'Kruskal (DSU), Prim (heap), Borůvka. MST uniqueness. Bottleneck MST.',keys:'Cut/cycle property proofs · both algorithms correct by matroid theory',challenges:[
+      {t:'Min Cost to Connect All Points (Prim)',d:'M',type:'Prim'},{t:'Optimize Water Distribution',d:'H',type:'Kruskal'},{t:'Critical & Pseudo-Critical MST Edges',d:'H',type:'MST'},{t:'Minimum Spanning Forest',d:'M',type:'MST'}]},
+    {name:'Tarjan: SCC, Bridges, Articulation',time:9,prereq:'DFS,Graph',concepts:['low-link','SCC','condensation DAG'],desc:'Tarjan SCC with DFS timestamps, bridge/articulation finding. Condensation DAG for DP on SCCs.',keys:'Low-link value definition · back edges matter for bridges · condensation for DAG DP',challenges:[
+      {t:'Critical Connections (Bridges)',d:'H',type:'Tarjan'},{t:'SCC Condensation to DAG',d:'H',type:'Tarjan'},{t:'Is Graph Bipartite?',d:'M',type:'Coloring'},{t:'Reconstruct Itinerary (Euler path)',d:'H',type:'Euler'}]},
+    {name:'Network Flow & Bipartite Matching',time:10,prereq:'BFS,Graph',concepts:['Ford-Fulkerson','max-flow min-cut','Hopcroft-Karp'],desc:'Ford-Fulkerson/Edmonds-Karp, Dinic\'s algorithm, max-flow min-cut theorem, bipartite matching.',keys:'Augmenting path · residual graph · Hopcroft-Karp: O(√V · E) for bipartite matching',challenges:[
+      {t:'Max Flow (Dinic\'s implementation)',d:'H',type:'Flow'},{t:'Bipartite Matching (Hopcroft-Karp)',d:'H',type:'Matching'},{t:'Project Selection (min cut)',d:'H',type:'MinCut'},{t:'Minimum Vertex Cover (König)',d:'H',type:'König'}]},
+  ]},
+  {id:'s09',num:'09',title:'Recursion & Backtracking',tag:'algo',tagLabel:'Algorithms',topics:[
+    {name:'Recursion Foundations',time:5,prereq:'none',concepts:['call stack','tail recursion','memoization bridge'],desc:'Recursion tree analysis, tail call optimization, memoization bridge to DP. Master theorem preview.',keys:'Count recursive calls · identify overlapping subproblems · convert to iterative',challenges:[
+      {t:'Pow(x, n)',d:'M',type:'Recursion'},{t:'K-th Symbol in Grammar',d:'M',type:'Recursion'},{t:'Count Good Numbers',d:'M',type:'Recursion'},{t:'Tower of Hanoi (iterative conversion)',d:'M',type:'Recursion'}]},
+    {name:'Backtracking Patterns',time:10,prereq:'Recursion',concepts:['pruning','constraint propagation','state-space tree'],desc:'Subset/permutation/combination generation, constraint-based pruning, N-Queens, Sudoku, word search.',keys:'Prune early · forward checking · when to clone vs restore state',challenges:[
+      {t:'N-Queens',d:'H',type:'Backtrack'},{t:'Sudoku Solver',d:'H',type:'Backtrack'},{t:'Word Search II (Trie pruning)',d:'H',type:'Backtrack'},{t:'Expression Add Operators',d:'H',type:'Backtrack'},{t:'Remove Invalid Parentheses',d:'H',type:'Backtrack'},{t:'Generalized Abbreviation',d:'M',type:'Backtrack'},{t:'Partition Equal Subset Sum',d:'M',type:'Backtrack+Memo'},{t:'Zuma Game',d:'H',type:'Backtrack'}]},
+  ]},
+  {id:'s10',num:'10',title:'Divide & Conquer',tag:'algo',tagLabel:'Algorithms',topics:[
+    {name:'D&C Analysis & Patterns',time:7,prereq:'Recursion',concepts:['master theorem','substitution','Strassen'],desc:'Master theorem (all 3 cases), substitution method, merge sort, closest pair of points, Strassen matrix mult.',keys:'Identify combine step complexity · when D&C → O(n log n) vs O(n log²n)',challenges:[
+      {t:'Count Inversions (merge sort)',d:'M',type:'D&C'},{t:'Closest Pair of Points',d:'H',type:'D&C'},{t:'Median of Two Sorted Arrays',d:'H',type:'BS'},{t:'Maximum Subarray (D&C)',d:'M',type:'D&C'},{t:'Construct Binary Tree from Preorder+Inorder',d:'M',type:'D&C'}]},
+    {name:'Randomized Algorithms',time:7,prereq:'D&C',concepts:['expected complexity','Las Vegas','reservoir sampling'],desc:'Randomized quicksort, QuickSelect/BFPRT, reservoir sampling, Bloom filter, skip list.',keys:'Expected vs worst case · randomization avoids adversarial inputs',challenges:[
+      {t:'Kth Largest (QuickSelect)',d:'M',type:'QuickSelect'},{t:'Shuffle an Array (Fisher-Yates)',d:'M',type:'Sampling'},{t:'Random Pick Index (reservoir)',d:'M',type:'Reservoir'},{t:'Implement Bloom Filter',d:'M',type:'Probabilistic'},{t:'Miller-Rabin Primality Test',d:'M',type:'MonteCarlo'}]},
+    {name:'Fast Fourier Transform',time:8,prereq:'D&C,ComplexNumbers',concepts:['Cooley-Tukey','NTT','convolution'],desc:'Cooley-Tukey FFT, inverse FFT, NTT for modular arithmetic. Applications: polynomial mult, string matching.',keys:'Butterfly diagram · NTT vs FFT numerical stability · O(n log n) convolution',challenges:[
+      {t:'Multiply Strings (FFT approach)',d:'H',type:'FFT'},{t:'Convolution with NTT (mod prime)',d:'H',type:'NTT'},{t:'Count Pairs with XOR in Range',d:'H',type:'FFT'}]},
+  ]},
+  {id:'s11',num:'11',title:'Greedy Algorithms',tag:'algo',tagLabel:'Algorithms',topics:[
+    {name:'Greedy Proofs & Paradigm',time:6,prereq:'Sorting',concepts:['exchange argument','greedy stays ahead','matroid'],desc:'Exchange argument, greedy stays ahead. Identifying when greedy fails. Matroid theory for general greedy.',keys:'Build formal proof before coding · matroids generalize greedy to structured problems',challenges:[
+      {t:'Activity Selection / Job Scheduling',d:'M',type:'Greedy'},{t:'Jump Game II',d:'M',type:'Greedy'},{t:'Candy Distribution',d:'H',type:'Greedy'},{t:'Gas Station (global greedy)',d:'M',type:'Greedy'},{t:'Minimum Number of Arrows',d:'M',type:'Interval'}]},
+    {name:'Interval Scheduling & Sweep Line',time:7,prereq:'Sorting',concepts:['sweep line','event processing','difference array'],desc:'Interval merging, meeting rooms, sweep line events, skyline problem, range module.',keys:'Event queue ordering · difference array for overlap counting · endpoint tie-breaking',challenges:[
+      {t:'Meeting Rooms II',d:'M',type:'Sweep'},{t:'The Skyline Problem',d:'H',type:'Sweep'},{t:'Non-Overlapping Intervals',d:'M',type:'Interval'},{t:'Employee Free Time',d:'H',type:'Interval'},{t:'Range Module',d:'H',type:'Design'}]},
+    {name:'Greedy on Strings & Sequences',time:6,prereq:'Greedy',concepts:['lex order','stack greedy','local→global'],desc:'Lexicographically smallest result, remove k digits, create max number, monotonic stack greedy.',keys:'Local choice affects global optimum · greedy + monotonic stack synergy',challenges:[
+      {t:'Remove K Digits',d:'M',type:'StackGreedy'},{t:'Create Maximum Number',d:'H',type:'Greedy'},{t:'Largest Number',d:'M',type:'Greedy'},{t:'Reorganize String',d:'M',type:'Greedy+Heap'},{t:'Task Scheduler',d:'M',type:'Greedy'}]},
+  ]},
+  {id:'s12',num:'12',title:'Dynamic Programming',tag:'algo',tagLabel:'Algorithms',topics:[
+    {name:'DP Foundations & 1D Patterns',time:9,prereq:'Recursion',concepts:['overlapping subproblems','optimal substructure','1D compression'],desc:'Top-down vs bottom-up, state design, transition formulation. LCS, LIS (nlogn), coin change.',keys:'Define state clearly before transitions · compress 2D table to 1D when possible',challenges:[
+      {t:'Longest Increasing Subsequence (nlogn)',d:'M',type:'DP'},{t:'Coin Change',d:'M',type:'DP'},{t:'Longest Common Subsequence',d:'M',type:'DP'},{t:'Edit Distance',d:'H',type:'DP'},{t:'Decode Ways',d:'M',type:'DP'},{t:'Word Break II',d:'H',type:'DP'},{t:'Distinct Subsequences',d:'H',type:'DP'}]},
+    {name:'2D & Grid DP',time:8,prereq:'1D DP',concepts:['direction states','reverse traversal','impossible states'],desc:'Matrix chain multiplication, dungeon game, unique paths with obstacles, cherry pickup.',keys:'Reverse traversal for "min cost from here" · handle impossible states carefully',challenges:[
+      {t:'Dungeon Game',d:'H',type:'GridDP'},{t:'Cherry Pickup II',d:'H',type:'GridDP'},{t:'Burst Balloons',d:'H',type:'IntervalDP'},{t:'Maximal Square',d:'M',type:'GridDP'},{t:'Minimum Falling Path Sum II',d:'H',type:'GridDP'}]},
+    {name:'Interval DP',time:8,prereq:'2D DP',concepts:['partition','merge','palindrome','Knuth opt'],desc:'Palindrome partitioning, stone merge, optimal BST, strange printer. Knuth optimization.',keys:'Loop order: length-first · identify split point k · Knuth\'s opt condition (opt[i][j] monotone)',challenges:[
+      {t:'Minimum Cost to Merge Stones',d:'H',type:'IntervalDP'},{t:'Strange Printer',d:'H',type:'IntervalDP'},{t:'Palindromic Substrings',d:'M',type:'IntervalDP'},{t:'Zuma Game',d:'H',type:'IntervalDP'},{t:'Minimum Cost to Cut a Stick (Knuth)',d:'H',type:'KnuthOpt'}]},
+    {name:'DP on Trees',time:7,prereq:'Trees,1D DP',concepts:['rerooting','tree DP','DAG DP'],desc:'Tree DP with/without node selection, rerooting technique for all-root DP in O(n).',keys:'Rerooting: compute from one root, re-derive all others O(n) · DP on DAG = topo+DP',challenges:[
+      {t:'Binary Tree Cameras',d:'H',type:'TreeDP'},{t:'House Robber III',d:'M',type:'TreeDP'},{t:'Maximum Path Sum',d:'H',type:'TreeDP'},{t:'Sum of Distances in Tree (rerooting)',d:'H',type:'Rerooting'},{t:'Count Nodes Equal to Sum of Descendants',d:'M',type:'TreeDP'}]},
+    {name:'Bitmask DP',time:8,prereq:'Bit Manipulation,DP',concepts:['subset enumeration','TSP','SOS DP'],desc:'TSP-style DP, covering subsets, SOS (sum over subsets) DP, Hamiltonian path on small graphs.',keys:'Enumerate subsets of subset: O(3^n) · SOS DP O(n·2^n) · bitmask = power set',challenges:[
+      {t:'Shortest Superstring',d:'H',type:'BitmaskDP'},{t:'Partition to K Equal Subsets',d:'M',type:'BitmaskDP'},{t:'Minimum XOR Sum of Two Arrays',d:'H',type:'BitmaskDP'},{t:'Number of Ways to Wear Hats',d:'H',type:'BitmaskDP'}]},
+    {name:'DP Optimization Techniques',time:10,prereq:'DP',concepts:['CHT','Li Chao tree','SMAWK','divide & conquer DP'],desc:'Convex Hull Trick, Li Chao tree, D&C DP optimization, Knuth optimization. When and why.',keys:'CHT when cost is linear in prev state · D&C DP when opt[i][j] is monotone in j',challenges:[
+      {t:'Largest Divisible Subset',d:'M',type:'DP'},{t:'Russian Doll Envelopes (BIT+LIS)',d:'H',type:'DP+BIT'},{t:'Max Sum of Rectangle ≤ K',d:'H',type:'PrefixSum+BST'},{t:'Minimum Cost with CHT',d:'H',type:'CHT'}]},
+    {name:'Digit DP & Automata DP',time:8,prereq:'DP',concepts:['digit DP','tight bound','leading zeros','automata'],desc:'Count numbers with digit constraints, automata DP for regex/pattern matching.',keys:'Tight/free flag · leading zeros handling · automata state as DP dimension',challenges:[
+      {t:'Count Numbers with Unique Digits',d:'M',type:'DigitDP'},{t:'Numbers At Most N Given Digit Set',d:'H',type:'DigitDP'},{t:'Regular Expression Matching',d:'H',type:'AutomataDP'},{t:'Wildcard Matching',d:'H',type:'DP'}]},
+  ]},
+  {id:'s13',num:'13',title:'String Algorithms',tag:'algo',tagLabel:'Algorithms',topics:[
+    {name:'KMP & Z-Algorithm',time:7,prereq:'Arrays',concepts:['failure function','prefix function','Z-array'],desc:'KMP failure function construction, Z-array for all match lengths. O(n) exact pattern matching.',keys:'KMP never re-examines characters · Z[i] = length of longest match starting at i',challenges:[
+      {t:'Implement KMP Search',d:'M',type:'KMP'},{t:'Repeated Substring Pattern',d:'M',type:'KMP'},{t:'Shortest Palindrome (KMP)',d:'H',type:'KMP'},{t:'Find All Anagrams (Z-algo)',d:'M',type:'ZAlgo'}]},
+    {name:'Suffix Array & Suffix Automaton',time:10,prereq:'Sorting,Trie',concepts:['LCP array','Kasai','suffix automaton','distinct substrings'],desc:'O(n log n) suffix array, LCP array with Kasai\'s algorithm, suffix automaton for all-substring problems.',keys:'Kasai\'s O(n) LCP construction · SA+LCP for longest common substring',challenges:[
+      {t:'Build Suffix Array O(n log n)',d:'H',type:'SuffixArray'},{t:'Longest Duplicate Substring',d:'H',type:'SuffixArray'},{t:'Distinct Substrings Count (SA)',d:'H',type:'SuffixArray'},{t:'Shortest Palindrome (Manacher)',d:'H',type:'Manacher'}]},
+    {name:'Aho-Corasick Multi-Pattern',time:8,prereq:'Trie',concepts:['failure links','dictionary links','AC automaton'],desc:'Aho-Corasick automaton: O(n + m + z) multi-pattern. Applications in bioinformatics, security.',keys:'Failure links = KMP failure on trie · build BFS order, search with automaton',challenges:[
+      {t:'Multi-Pattern Search (Aho-Corasick)',d:'H',type:'AhoCorasick'},{t:'Distinct Echo Substrings',d:'H',type:'AhoCorasick'},{t:'Word Filter (prefix+suffix)',d:'H',type:'Trie'}]},
+  ]},
+  {id:'s14',num:'14',title:'Mathematical Foundations for ML',tag:'math',tagLabel:'Math/Theory',topics:[
+    {name:'Linear Algebra for ML',time:8,prereq:'none',concepts:['SVD','eigendecomposition','matrix calculus','Jacobian'],desc:'SVD decomposition, eigenvalues/vectors, PCA derivation from covariance, matrix calculus for backprop.',keys:'Why SVD underlies PCA and attention · Jacobian shape conventions (row vs col-major)',challenges:[
+      {t:'Compute SVD of a matrix (power iter)',d:'M',type:'LinAlg'},{t:'Derive PCA from SVD',d:'H',type:'Theory'},{t:'Jacobian of Softmax function',d:'H',type:'Calculus'},{t:'Gram-Schmidt orthogonalization',d:'M',type:'LinAlg'}]},
+    {name:'Probability & Information Theory',time:8,prereq:'Calculus',concepts:['KL divergence','entropy','MI','conjugate priors'],desc:'KL divergence, cross-entropy, mutual information, Bayes theorem, conjugate priors, variational inference.',keys:'CE loss = KL + entropy constant · ELBO derivation · KL is asymmetric',challenges:[
+      {t:'Derive ELBO for VAE',d:'H',type:'Theory'},{t:'Compute MI between two discrete RVs',d:'M',type:'InfoTheory'},{t:'KL divergence between two Gaussians',d:'M',type:'Probability'},{t:'Derive MLE for Gaussian',d:'M',type:'Statistics'}]},
+    {name:'Optimization Theory',time:9,prereq:'Linear Algebra',concepts:['convexity','KKT conditions','Lagrangian','convergence rates'],desc:'Convex vs non-convex, Lagrangian duality, KKT conditions, convergence rates of GD variants.',keys:'Convexity guarantees global opt · Lipschitz smoothness → step size bound · PL condition',challenges:[
+      {t:'Derive KKT conditions for SVM',d:'H',type:'Optimization'},{t:'Prove GD convergence on strongly convex f',d:'H',type:'Theory'},{t:'Compare SGD vs Adam convergence empirically',d:'M',type:'Empirical'}]},
+  ]},
+  {id:'s15',num:'15',title:'Classical ML Algorithms',tag:'ml',tagLabel:'ML/DL/QML',topics:[
+    {name:'MMSE & Estimation Theory',time:7,prereq:'Probability',concepts:['MMSE','MAP','Kalman filter','Wiener'],desc:'MMSE estimator derivation, MAP vs MLE, linear MMSE (Wiener filter), Kalman filter as recursive MMSE.',keys:'MMSE = E[X|Y] under squared loss · Kalman = Bayesian update for Gaussians',challenges:[
+      {t:'Implement 1D Kalman Filter',d:'M',type:'Estimation'},{t:'Wiener Filter for Signal Denoising',d:'H',type:'MMSE'},{t:'Derive LMMSE estimator',d:'H',type:'Theory'},{t:'Extended Kalman Filter for nonlinear system',d:'H',type:'EKF'}]},
+    {name:'Linear & Logistic Regression',time:6,prereq:'Linear Algebra',concepts:['normal equations','regularization','GLMs','LASSO'],desc:'OLS, ridge, LASSO (coordinate descent), elastic net, logistic regression, softmax, GLM unification.',keys:'Ridge = Gaussian prior · LASSO = Laplacian prior · derive normal equations via calculus',challenges:[
+      {t:'Ridge Regression from Scratch',d:'M',type:'Regression'},{t:'LASSO with Coordinate Descent',d:'H',type:'Optimization'},{t:'Multi-class Softmax Regression',d:'M',type:'Classification'},{t:'Bayesian Linear Regression',d:'H',type:'Bayesian'}]},
+    {name:'SVM & Kernel Methods',time:9,prereq:'Optimization',concepts:['kernel trick','SMO','RKHS','dual form'],desc:'Hard/soft margin SVM, kernel trick (Mercer), SMO algorithm, kernel PCA, SVR.',keys:'Dual formulation exposes kernel · Mercer condition for valid kernels · RKHS theory',challenges:[
+      {t:'SVM from Scratch (SMO)',d:'H',type:'SVM'},{t:'Kernel PCA implementation',d:'H',type:'KernelMethod'},{t:'Solve Dual SVM with QP solver',d:'H',type:'Optimization'},{t:'SVR for regression',d:'M',type:'SVM'}]},
+    {name:'Decision Trees & Ensembles',time:8,prereq:'none',concepts:['information gain','Gini','boosting','XGBoost'],desc:'ID3/C4.5/CART, random forests, GBM, XGBoost second-order Taylor expansion for leaf scoring.',keys:'XGBoost: 2nd-order Taylor approx · RF: reduces variance not bias · GBDT: fits residuals',challenges:[
+      {t:'CART splitting from scratch (Gini)',d:'M',type:'Tree'},{t:'Gradient Boosted Trees (GBM)',d:'H',type:'Ensemble'},{t:'XGBoost leaf scoring formula',d:'H',type:'XGBoost'},{t:'Feature importance from RF',d:'M',type:'Ensemble'}]},
+    {name:'Clustering & Dimensionality Reduction',time:7,prereq:'Linear Algebra',concepts:['EM algorithm','spectral clustering','UMAP','t-SNE'],desc:'k-Means/k-Means++, GMM with EM, DBSCAN, spectral clustering, PCA, t-SNE, UMAP.',keys:'EM: convergence to local maximum · UMAP preserves topology · spectral = eigendecomp of Laplacian',challenges:[
+      {t:'k-Means++ from scratch',d:'M',type:'Clustering'},{t:'GMM with EM algorithm',d:'H',type:'EM'},{t:'Spectral Clustering (graph Laplacian)',d:'H',type:'Spectral'},{t:'UMAP vs t-SNE on MNIST',d:'M',type:'Visualization'}]},
+  ]},
+  {id:'s16',num:'16',title:'Neural Networks & Backprop',tag:'ml',tagLabel:'ML/DL/QML',topics:[
+    {name:'Backpropagation & Autodiff',time:9,prereq:'Linear Algebra,Calculus',concepts:['computational graph','reverse mode AD','VJP'],desc:'Forward/reverse mode autodiff, computational graphs, chain rule for tensors, custom backward passes.',keys:'Reverse mode = backprop, efficient when outputs << inputs · VJP for efficient computation',challenges:[
+      {t:'Implement 2-layer NN backprop',d:'M',type:'Backprop'},{t:'Derive gradient for Softmax+CrossEntropy',d:'H',type:'Calculus'},{t:'BatchNorm backward pass',d:'H',type:'Backprop'},{t:'Build micrograd autograd engine',d:'H',type:'Autodiff'}]},
+    {name:'Optimizers Deep Dive',time:7,prereq:'Backprop',concepts:['momentum','adaptive lr','convergence','AdamW','LAMB'],desc:'SGD+Nesterov, AdaGrad, RMSProp, Adam, AdamW, LAMB, cosine annealing, linear warmup.',keys:'Adam = RMSProp + momentum · AdamW decouples weight decay · LAMB for large-batch training',challenges:[
+      {t:'Implement Adam from scratch',d:'M',type:'Optimizer'},{t:'Implement LAMB optimizer',d:'H',type:'Optimizer'},{t:'Compare on Rosenbrock saddle point',d:'M',type:'Empirical'},{t:'Cosine annealing with warm restarts',d:'M',type:'Schedule'}]},
+    {name:'CNN Architectures',time:9,prereq:'Backprop',concepts:['receptive field','depthwise conv','skip connections','attention CNN'],desc:'Conv2D math, pooling, receptive field calc, ResNet skip connections, depthwise separable convs, EfficientNet.',keys:'Receptive field multiplies with depth · skip connections enable gradient flow · FLOPs analysis',challenges:[
+      {t:'Build ResNet-20 from scratch',d:'H',type:'CNN'},{t:'Depthwise Separable Conv layer',d:'M',type:'CNN'},{t:'Receptive field size calculator',d:'M',type:'Theory'},{t:'Implement grouped/deformable convolution',d:'H',type:'CNN'}]},
+    {name:'Recurrent Networks & BPTT',time:8,prereq:'Backprop',concepts:['vanishing gradient','gating','BPTT','CTC'],desc:'Vanilla RNN, LSTM gating, GRU simplification, BPTT truncation, gradient clipping, CTC loss.',keys:'LSTM gates: forget/input/output · tanh+sigmoid prevent vanishing · CTC aligns sequences',challenges:[
+      {t:'LSTM from scratch (char-level LM)',d:'H',type:'RNN'},{t:'BPTT with gradient clipping',d:'M',type:'BPTT'},{t:'Seq2Seq with attention mechanism',d:'H',type:'Attention'},{t:'CTC loss for sequence labeling',d:'H',type:'Loss'}]},
+    {name:'Transformers & Self-Attention',time:10,prereq:'LSTM',concepts:['scaled dot-product','multi-head','RoPE','Flash Attention'],desc:'Self-attention derivation, multi-head, positional encodings (sinusoidal, RoPE, ALiBi), BERT/GPT, Flash Attention.',keys:'QKV projection · scale by √d_k · RoPE relative position natively · Flash Attention tiling',challenges:[
+      {t:'Implement self-attention block',d:'H',type:'Transformer'},{t:'Build mini-GPT from scratch',d:'H',type:'GPT'},{t:'Rotary Positional Embeddings (RoPE)',d:'H',type:'Positional'},{t:'Multi-query vs grouped-query attention',d:'H',type:'Efficient'},{t:'Flash Attention tiling logic',d:'X',type:'Systems'}]},
+  ]},
+  {id:'s17',num:'17',title:'Self-Supervised & Efficient DL',tag:'ml',tagLabel:'ML/DL/QML',topics:[
+    {name:'Contrastive Learning & SSL',time:8,prereq:'CNN,Loss',concepts:['NT-Xent','InfoNCE','BYOL','VICReg','DINO'],desc:'SimCLR, MoCo, BYOL (no negatives), VICReg, DINO. Loss analysis, collapse prevention, linear probing.',keys:'InfoNCE lower bounds mutual information · BYOL: EMA target prevents collapse',challenges:[
+      {t:'SimCLR training loop',d:'H',type:'SSL'},{t:'Implement NT-Xent / InfoNCE loss',d:'M',type:'Loss'},{t:'BYOL with EMA target network',d:'H',type:'SSL'},{t:'Linear probe evaluation protocol',d:'M',type:'SSL'}]},
+    {name:'Quantization & STE',time:8,prereq:'Backprop',concepts:['STE','PTQ','QAT','ternary weights','INT8'],desc:'Post-training quant, QAT, Straight-Through Estimator, ternary/binary nets, INT8 calibration.',keys:'STE bypasses non-differentiable quant · symmetric vs asymmetric · scale+zero_point',challenges:[
+      {t:'Implement STE quantization layer',d:'H',type:'Quantization'},{t:'QAT vs PTQ accuracy comparison',d:'M',type:'Empirical'},{t:'Ternary Weight Training (TWN)',d:'H',type:'Quantization'},{t:'INT8 calibration (min-max vs percentile)',d:'M',type:'Quantization'}]},
+    {name:'Pruning, Distillation & NAS',time:8,prereq:'CNN',concepts:['magnitude pruning','channel pruning','DARTS','lottery ticket'],desc:'Magnitude pruning, structured (channel) pruning, lottery ticket hypothesis, knowledge distillation, DARTS.',keys:'Lottery ticket: sparse init subnetwork · DARTS: discrete search → continuous relaxation',challenges:[
+      {t:'Magnitude pruning + fine-tuning',d:'M',type:'Pruning'},{t:'Channel pruning with FPGM criterion',d:'H',type:'StructuredPruning'},{t:'Knowledge distillation ResNet→MobileNet',d:'H',type:'Distillation'},{t:'DARTS search cell implementation',d:'X',type:'NAS'}]},
+    {name:'Wavelet & Frequency Domain DL',time:7,prereq:'CNN',concepts:['Haar DWT','FNO','spectral conv','frequency pretraining'],desc:'Haar/DWT as differentiable layers, Fourier Neural Operator (FNO) for PDEs, frequency-domain pretraining.',keys:'DWT preserves energy · FNO learns operator in frequency domain · compare DWT vs Gabor',challenges:[
+      {t:'Haar DWT as PyTorch autograd layer',d:'M',type:'Wavelet'},{t:'Wavelet denoising autoencoder',d:'H',type:'Wavelet'},{t:'Fourier Neural Operator (FNO) mini',d:'H',type:'FNO'},{t:'DWT preprocessing for leaf disease classification',d:'M',type:'Applied'}]},
+  ]},
+  {id:'s18',num:'18',title:'Quantum Computing & QML',tag:'adv',tagLabel:'Advanced',topics:[
+    {name:'Quantum Computing Foundations',time:8,prereq:'Linear Algebra',concepts:['qubits','unitaries','entanglement','Bloch sphere'],desc:'Qubits, superposition, entanglement, quantum gates (H, CNOT, T, Toffoli), circuit model, measurement.',keys:'Measurement collapses state · entanglement ≠ faster-than-light · Bloch sphere intuition',challenges:[
+      {t:'Simulate 2-qubit circuit (matrix)',d:'M',type:'QC'},{t:'Implement Grover\'s search',d:'H',type:'QC'},{t:'Implement Quantum Fourier Transform',d:'H',type:'QC'},{t:'Deutsch-Jozsa algorithm',d:'M',type:'QC'}]},
+    {name:'Parameter Shift Rule',time:7,prereq:'QC Foundations',concepts:['PSR','gradient VQC','finite difference','hardware noise'],desc:'Analytic gradient of parameterized quantum circuits. PSR vs finite difference comparison.',keys:'PSR: ∂f/∂θ = [f(θ+π/2) – f(θ–π/2)] / 2 · only 2 evals per parameter',challenges:[
+      {t:'Implement PSR for single qubit gate',d:'M',type:'PSR'},{t:'PSR on noisy hardware model',d:'H',type:'PSR'},{t:'Compare PSR vs finite diff gradient quality',d:'M',type:'Empirical'}]},
+    {name:'Variational Quantum Algorithms',time:9,prereq:'PSR',concepts:['VQE','QAOA','barren plateaus','ansatz design'],desc:'VQE for ground state energy, QAOA for combinatorial optimization, barren plateau problem, hardware-efficient ansatz.',keys:'Barren plateau: gradient variance exponentially small with system size · hardware-efficient ansatz',challenges:[
+      {t:'VQE for H₂ molecule (PennyLane)',d:'H',type:'VQE'},{t:'QAOA for Max-Cut problem',d:'H',type:'QAOA'},{t:'Barren plateau diagnosis experiment',d:'H',type:'Theory'},{t:'Cost function evaluation circuit',d:'M',type:'VQC'}]},
+    {name:'Quantum Machine Learning',time:9,prereq:'VQE,Classical ML',concepts:['quantum kernels','amplitude encoding','HHL','dequantization'],desc:'Quantum kernel methods, amplitude encoding, QNN, HHL linear systems, dequantization critique.',keys:'HHL: exponential speedup only with quantum RAM · dequantization destroys many QML claims',challenges:[
+      {t:'Quantum kernel SVM (PennyLane)',d:'H',type:'QML'},{t:'Amplitude encoding of image data',d:'H',type:'QML'},{t:'HHL for 4×4 linear system',d:'H',type:'HHL'},{t:'Dequantize a QML algorithm (theory)',d:'X',type:'Theory'}]},
+  ]},
+  {id:'s19',num:'19',title:'Operating Systems Algorithms',tag:'sys',tagLabel:'Systems',topics:[
+    {name:'CPU Scheduling',time:7,prereq:'Queue',concepts:['preemption','MLFQ','EDF','rate-monotonic'],desc:'FCFS, SJF, Round Robin, MLFQ, EDF, rate-monotonic scheduling. Real-time schedulability analysis.',keys:'MLFQ approximates SJF without prior knowledge · EDF optimal for preemptive real-time',challenges:[
+      {t:'Simulate MLFQ scheduler',d:'H',type:'OS'},{t:'EDF schedulability test (UB theorem)',d:'M',type:'OS'},{t:'Rate-Monotonic feasibility analysis',d:'M',type:'OS'},{t:'Process scheduling timeline simulation',d:'M',type:'OS'}]},
+    {name:'Memory Management',time:8,prereq:'none',concepts:['page replacement','buddy system','TLB','slab'],desc:'Page replacement (OPT, LRU, LFU, Clock), buddy system, slab allocator, working set model.',keys:'Clock ≈ LRU approximation · buddy: O(log n) coalescing · slab avoids internal fragmentation',challenges:[
+      {t:'LFU Cache O(1) all operations',d:'H',type:'Cache'},{t:'Simulate buddy system allocator',d:'H',type:'Memory'},{t:'OPT page replacement (offline oracle)',d:'M',type:'PageReplacement'},{t:'Working set model simulation',d:'M',type:'VM'}]},
+    {name:'Concurrency & Synchronization',time:8,prereq:'none',concepts:["Banker's algorithm",'lock-free','CAS','monitors'],desc:"Banker's algorithm, Peterson's, mutex, semaphore, monitors, lock-free data structures with CAS.",keys:'Banker\'s: safe state = can finish all · CAS is foundation of lock-free algorithms',challenges:[
+      {t:'Dining Philosophers (deadlock-free)',d:'H',type:'Sync'},{t:"Implement Banker's Algorithm",d:'M',type:'Deadlock'},{t:'Lock-free stack with CAS',d:'H',type:'LockFree'},{t:'Starvation-free Readers-Writers',d:'H',type:'Sync'}]},
+    {name:'File Systems & I/O Scheduling',time:6,prereq:'none',concepts:['inode','SCAN','LSF','journal'],desc:'Disk scheduling (SSTF, SCAN, C-SCAN, LOOK), inode design, journaling, log-structured file system.',keys:'C-SCAN uniform wait time · log-structured FS: append-only + GC · journaling for crash recovery',challenges:[
+      {t:'Simulate SCAN disk scheduler',d:'M',type:'IO'},{t:'Directory tree with inodes',d:'M',type:'FS'},{t:'LFS segment cleaning simulation',d:'H',type:'FS'}]},
+  ]},
+  {id:'s20',num:'20',title:'DBMS Algorithms',tag:'sys',tagLabel:'Systems',topics:[
+    {name:'B+Tree & Storage Engines',time:8,prereq:'BST',concepts:['B+Tree','LSM tree','buffer pool','WAL'],desc:'B+Tree insert/delete/split, LSM trees (LevelDB/RocksDB), buffer pool management with replacement policies.',keys:'B+Tree: all data in leaves, internal nodes are routing · LSM: write-optimized via compaction',challenges:[
+      {t:'Implement B+Tree insert/range-search',d:'H',type:'BTree'},{t:'Simulate LSM tree compaction',d:'H',type:'LSM'},{t:'Buffer pool with clock replacement',d:'H',type:'BufferPool'}]},
+    {name:'Query Processing & Optimization',time:8,prereq:'Sorting,Hashing',concepts:['hash join','cost model','selectivity','join ordering'],desc:'Hash join, merge join, nested loop join. Cost-based optimizer, histogram selectivity estimation, Selinger optimizer.',keys:'Hash join: O(N+M) avg · Selinger: dynamic programming for join ordering',challenges:[
+      {t:'Implement hash join',d:'M',type:'Join'},{t:'Simple query cost estimator',d:'H',type:'Optimizer'},{t:'Grace hash join (disk-based external)',d:'H',type:'Join'}]},
+    {name:'Transactions & Concurrency Control',time:9,prereq:'Sync',concepts:['MVCC','2PL','WAL','ARIES recovery'],desc:'2PL, MVCC (PostgreSQL snapshot isolation), WAL write-ahead logging, ARIES (analysis/redo/undo).',keys:'MVCC: readers don\'t block writers · ARIES: repeat history then undo losers',challenges:[
+      {t:'Detect deadlock in 2PL waits-for graph',d:'H',type:'2PL'},{t:'MVCC snapshot isolation anomalies',d:'M',type:'MVCC'},{t:'Implement WAL write-ahead log',d:'H',type:'WAL'},{t:'ARIES recovery three phases',d:'H',type:'Recovery'}]},
+  ]},
+  {id:'s21',num:'21',title:'Networking Algorithms',tag:'sys',tagLabel:'Systems',topics:[
+    {name:'Routing Algorithms',time:7,prereq:'Dijkstra,BFS',concepts:['link-state','distance-vector','BGP policy'],desc:'OSPF (Dijkstra link-state), RIP (Bellman-Ford distance-vector), BGP policy routing, SDN overview.',keys:'DV suffers count-to-infinity · LS needs full topology · BGP: policy > shortest',challenges:[
+      {t:'Simulate OSPF (Dijkstra on topology)',d:'M',type:'Routing'},{t:'RIP convergence with count-to-infinity',d:'M',type:'Routing'},{t:'BGP policy routing simulation',d:'H',type:'BGP'}]},
+    {name:'Congestion Control',time:7,prereq:'none',concepts:['AIMD','slow start','CUBIC','BBR','QUIC'],desc:'TCP slow start, AIMD fairness proof, CUBIC, BBR (model-based), QUIC multiplexing.',keys:'AIMD converges to fair share · BBR doesn\'t infer loss as congestion',challenges:[
+      {t:'Simulate TCP slow start / AIMD',d:'M',type:'TCP'},{t:'Model AIMD fairness (two competing flows)',d:'M',type:'TCP'},{t:'Compare CUBIC vs BBR cwnd evolution',d:'M',type:'Empirical'}]},
+    {name:'Distributed Consensus',time:10,prereq:'Graph',concepts:['Paxos','Raft','BFT','2PC','3PC'],desc:'Paxos (single-decree), Raft (understandable consensus), Byzantine fault tolerance (BFT), 2PC/3PC.',keys:'Raft: leader election + log replication · 2PC blocks on coordinator crash · 3f+1 for BFT',challenges:[
+      {t:'Implement Raft leader election',d:'H',type:'Consensus'},{t:'2-Phase Commit protocol',d:'H',type:'2PC'},{t:'Byzantine Generals problem',d:'H',type:'BFT'},{t:'Compare Paxos vs Raft',d:'M',type:'Theory'}]},
+    {name:'P2P, CDN & Consistent Hashing',time:6,prereq:'Hashing',concepts:['consistent hashing','DHT','Chord','Kademlia'],desc:'Consistent hashing for load balancing, Chord DHT, Kademlia, Gossip/epidemic protocols.',keys:'Consistent hashing: O(1/n) keys remapped on change · Chord: O(log n) lookup with finger table',challenges:[
+      {t:'Implement consistent hashing ring',d:'M',type:'Hashing'},{t:'Chord DHT finger table construction',d:'H',type:'DHT'},{t:'Gossip protocol convergence simulation',d:'M',type:'P2P'}]},
+  ]},
+  {id:'s22',num:'22',title:'DNA & Bioinformatics Algorithms',tag:'adv',tagLabel:'Advanced',topics:[
+    {name:'Sequence Alignment',time:9,prereq:'DP',concepts:['NW','Smith-Waterman','affine gaps','BLAST'],desc:'Needleman-Wunsch (global), Smith-Waterman (local), affine gap penalties, BLAST heuristic.',keys:'SW uses 0 as floor for local alignment · affine gap: different open vs extend penalty',challenges:[
+      {t:'Needleman-Wunsch global alignment',d:'M',type:'Alignment'},{t:'Smith-Waterman local alignment',d:'H',type:'Alignment'},{t:'Alignment with affine gap penalty',d:'H',type:'Alignment'},{t:'Approximate BLAST heuristic',d:'H',type:'BLAST'}]},
+    {name:'BWT & FM-Index',time:9,prereq:'String Algorithms',concepts:['BWT','FM-index','LF mapping','suffix array'],desc:'Burrows-Wheeler Transform, FM-index for compressed text search, LF mapping.',keys:'BWT + SA enables O(m) pattern search · LF mapping = last-to-first column jump',challenges:[
+      {t:'Build & invert BWT',d:'H',type:'BWT'},{t:'FM-Index pattern search',d:'H',type:'FMIndex'},{t:'Build suffix array via BWT',d:'H',type:'SuffixArray'}]},
+    {name:'Evolutionary & Genetic Algorithms',time:8,prereq:'Probability',concepts:['selection','crossover','CMA-ES','NEAT','NSGA-II'],desc:'GA operators, fitness landscape, CMA-ES covariance adaptation, NEAT topology evolution, NSGA-II multi-objective.',keys:'CMA-ES adapts full covariance matrix · NEAT encodes both weights and topology',challenges:[
+      {t:'GA for Traveling Salesman',d:'H',type:'GA'},{t:'CMA-ES on Rastrigin function',d:'H',type:'CMA'},{t:'NEAT for CartPole balance',d:'H',type:'NEAT'},{t:'NSGA-II multi-objective optimization',d:'X',type:'MOEA'}]},
+  ]},
+  {id:'s23',num:'23',title:'Complexity Theory',tag:'math',tagLabel:'Math/Theory',topics:[
+    {name:'Complexity Classes & Reductions',time:9,prereq:'Graph,DP',concepts:['NP-completeness','Cook-Levin','PSPACE','#P'],desc:'P vs NP, NP-hard/NP-complete, Cook-Levin theorem, polynomial reductions, PSPACE, counting #P.',keys:'Reduction direction: from known NP-hard TO new problem · 3-SAT is canonical NP-complete',challenges:[
+      {t:'Reduce 3-SAT → Vertex Cover',d:'H',type:'Reduction'},{t:'2-SAT (polynomial via SCC)',d:'M',type:'2SAT'},{t:'Prove your own NP-hardness',d:'X',type:'Theory'},{t:'Approximate Set Cover (ln n)',d:'M',type:'Approx'}]},
+    {name:'Approximation Algorithms',time:8,prereq:'Greedy',concepts:['approx ratio','FPTAS','LP relaxation','Christofides'],desc:'Vertex cover 2-approx, TSP (Christofides 3/2), bin packing, LP-rounding, FPTAS for knapsack.',keys:'Christofides: 3/2 for metric TSP · LP relaxation gives lower bound · PTAS vs FPTAS',challenges:[
+      {t:'Vertex Cover 2-approximation',d:'M',type:'Approx'},{t:'Greedy Set Cover (ln n)',d:'M',type:'Approx'},{t:'FPTAS for 0/1 Knapsack',d:'H',type:'FPTAS'},{t:'Christofides for metric TSP',d:'H',type:'Approx'}]},
+    {name:'Amortized Analysis',time:6,prereq:'DS Foundations',concepts:['aggregate','accounting','potential method','splay'],desc:'Aggregate, accounting, potential methods. Splay trees, dynamic arrays, union-find amortized proofs.',keys:'Potential function stores credit · amortized ≠ average case · splay: each op O(log n) amortized',challenges:[
+      {t:'Amortized analysis of dynamic array',d:'M',type:'Amortized'},{t:'Potential analysis of splay tree',d:'H',type:'Amortized'},{t:'Amortize union-find with path compression',d:'M',type:'Amortized'}]},
+    {name:'Online Algorithms',time:7,prereq:'Algorithms',concepts:['competitive ratio','ski rental','paging','k-server','secretary'],desc:'Competitive ratio, ski rental, paging (k-server problem), secretary problem optimal stopping.',keys:'Ski rental: break-even threshold = 1 · k-server conjecture: competitive ratio = k',challenges:[
+      {t:'Ski rental optimal threshold proof',d:'M',type:'Online'},{t:'Online bipartite matching (RANKING)',d:'H',type:'Online'},{t:'Secretary problem optimal stopping',d:'M',type:'Online'},{t:'k-Server on a line',d:'H',type:'Online'}]},
+  ]},
+  {id:'s24',num:'24',title:'Parallel & Distributed Algorithms',tag:'adv',tagLabel:'Advanced',topics:[
+    {name:'Parallel Algorithms (PRAM)',time:8,prereq:'D&C',concepts:['work-span',"Brent's theorem",'prefix scan'],desc:'PRAM model, work-span analysis, Brent\'s theorem, Blelloch parallel prefix scan, parallel sort.',keys:'Span = critical path · Brent: time ≤ work/p + span · Blelloch scan in O(log n) span',challenges:[
+      {t:'Parallel prefix sum (Blelloch scan)',d:'H',type:'Parallel'},{t:'Parallel merge sort (work-span analysis)',d:'H',type:'Parallel'},{t:'Parallel BFS (Beamer et al.)',d:'H',type:'Parallel'}]},
+    {name:'Streaming Algorithms',time:7,prereq:'Hashing,Probability',concepts:['count-min sketch','HyperLogLog','AMS sketch','heavy hitters'],desc:'Count-Min Sketch, HyperLogLog cardinality, AMS sketch for frequency moments, Space Saving.',keys:'HyperLogLog: O(log log n) space for cardinality · CM-Sketch: point queries over-approximate',challenges:[
+      {t:'Implement Count-Min Sketch',d:'M',type:'Streaming'},{t:'HyperLogLog cardinality estimator',d:'H',type:'Streaming'},{t:'Top-K heavy hitters (Space Saving)',d:'H',type:'Streaming'}]},
+  ]},
+  {id:'s25',num:'25',title:'Compiler & Parsing Theory',tag:'adv',tagLabel:'Advanced',topics:[
+    {name:'Parsing Algorithms',time:8,prereq:'String Algorithms',concepts:['LL(k)','LR(k)','Earley','CYK'],desc:'LL(1) recursive descent, LR(0)/LALR(1) state machines, Earley parser for all CFGs, CYK algorithm.',keys:'LR more powerful than LL · CYK: O(n³|G|) for any CFG · GLR for ambiguous grammars',challenges:[
+      {t:'Build LL(1) parser for arithmetic',d:'H',type:'Parsing'},{t:'CYK algorithm for CFG membership',d:'H',type:'CYK'},{t:'LR(0) state machine construction',d:'H',type:'LR'}]},
+    {name:'Dataflow Analysis & IR Optimization',time:8,prereq:'Graph',concepts:['SSA','dominance','liveness','constant folding'],desc:'Control flow graph, dominance tree, SSA form, liveness analysis, reaching definitions, constant propagation.',keys:'SSA: every variable defined exactly once · φ-functions at join points · dom tree via Lengauer-Tarjan',challenges:[
+      {t:'Compute dominator tree (Lengauer-Tarjan)',d:'H',type:'CFG'},{t:'Liveness analysis on CFG',d:'M',type:'Dataflow'},{t:'Constant propagation in SSA form',d:'M',type:'Optimization'}]},
+  ]},
+];
+
+let st={};try{st=JSON.parse(sessionStorage.getItem('sv3')||'{}');}catch(e){}
+function save(){try{sessionStorage.setItem('sv3',JSON.stringify(st));}catch(e){}}
+let curF='all',curV='grid',curSt='order',hd=false;
+
+function computeStats(){
+  let topics=0,challenges=0,hours=0,done=0;
+  D.forEach(s=>s.topics.forEach((t,ti)=>{topics++;challenges+=t.challenges.length;hours+=t.time;if(st[`${s.id}-${ti}`])done++;}));
+  return{topics,challenges,hours,done};
+}
+function updateStats(){
+  const s=computeStats();
+  document.getElementById('stT').textContent=s.topics;
+  document.getElementById('stC').textContent=s.challenges;
+  document.getElementById('stH').textContent=s.hours+'h';
+  document.getElementById('stD').textContent=s.done;
+  const pct=s.topics?Math.round(s.done/s.topics*100):0;
+  document.getElementById('stP').textContent=pct+'%';
+  document.getElementById('pFill').style.width=pct+'%';
+  document.getElementById('pLeft').textContent=(s.topics-s.done)+' topics remaining';
+  document.getElementById('pPct').textContent=pct+'% complete';
+  document.querySelectorAll('.card').forEach(c=>{
+    const k=c.dataset.key;if(!k)return;
+    const d=!!st[k];c.classList.toggle('done',d);
+    const cb=c.querySelector('.cb');if(cb)cb.textContent=d?'✓':'';
+  });
+  document.querySelectorAll('.ch-item').forEach(el=>el.classList.toggle('c-done',!!st[el.dataset.ck]));
+}
+function render(){
+  const syl=document.getElementById('syl');
+  const nav=document.getElementById('sNav');
+  syl.innerHTML='';
+  nav.innerHTML='<span class="snav-title">§</span>';
+  let sorted=[...D];
+  if(curSt==='alpha')sorted.sort((a,b)=>a.title.localeCompare(b.title));
+  sorted.forEach((s,si)=>{
+    if(curF!=='all'&&s.tag!==curF)return;
+    let topics=[...s.topics.entries()];
+    if(curSt==='time')topics.sort((a,b)=>b[1].time-a[1].time);
+    if(curSt==='chal')topics.sort((a,b)=>b[1].challenges.length-a[1].challenges.length);
+    const sec=document.createElement('div');
+    sec.className='section';sec.id=s.id;sec.dataset.tag=s.tag;
+    sec.style.animationDelay=(si*0.04)+'s';
+    sec.innerHTML=`<div class="sec-hdr"><span class="sec-num">${s.num}</span><span class="sec-title">${s.title}</span><span class="sec-count">${s.topics.length} topics</span><span class="sec-tag t-${s.tag}">${s.tagLabel}</span></div><div class="cards${curV==='list'?' lv':''}" id="c-${s.id}"></div>`;
+    syl.appendChild(sec);
+    const nl=document.createElement('span');nl.className='snav-link';nl.textContent=`${s.num}. ${s.title}`;nl.onclick=()=>document.getElementById(s.id)?.scrollIntoView({behavior:'smooth'});nav.appendChild(nl);
+    const ce=sec.querySelector(`#c-${s.id}`);
+    let vis=0;
+    topics.forEach(([ti,t])=>{
+      const key=`${s.id}-${ti}`;
+      const isDone=!!st[key];
+      if(hd&&isDone)return;
+      const card=document.createElement('div');
+      card.className='card'+(isDone?' done':'');
+      card.dataset.key=key;
+      card.dataset.name=t.name.toLowerCase();
+      card.dataset.desc=(t.desc+' '+t.keys+' '+t.concepts.join(' ')).toLowerCase();
+      card.dataset.challenges=t.challenges.map(c=>c.t.toLowerCase()).join(' ');
+      const doneC=t.challenges.filter((_,ci)=>st[`c-${s.id}-${ti}-${ci}`]).length;
+      const prereqHtml=t.prereq!=='none'?`<span class="ctag ct-prereq">↗ ${t.prereq}</span>`:'';
+      const cHtml=t.concepts.map(c=>`<span class="ctag ct-concept">${c}</span>`).join('');
+      const chHtml=t.challenges.map((c,ci)=>{
+        const ck=`c-${s.id}-${ti}-${ci}`;const cDone=!!st[ck];
+        return`<div class="ch-item${cDone?' c-done':''}" data-ck="${ck}" onclick="event.stopPropagation();toggleCh('${ck}')"><div class="ch-dot"></div><div class="ch-text">${c.t}</div><div class="ch-meta"><span class="ch-type">${c.type}</span><span class="diff d${c.d}">${c.d==='E'?'Easy':c.d==='M'?'Med':c.d==='H'?'Hard':'Research'}</span></div></div>`;
+      }).join('');
+      const nk=`note-${key}`;const savedNote=st[nk]||'';
+      card.innerHTML=`<div class="card-top"><div class="card-name">${t.name}</div><div class="cb" onclick="event.stopPropagation();toggleT('${key}')">${isDone?'✓':''}</div></div><div class="card-tags"><span class="ctag ct-time">⏱ ~${t.time}h</span>${prereqHtml}${cHtml}</div><div class="card-desc">${t.desc}</div><div class="key-ideas"><strong>Key Insights</strong>${t.keys}</div><div class="expand-row" onclick="toggleExp(this.closest('.card'))"><span>▸ ${t.challenges.length} challenges · ${doneC} done</span><span class="arr">▶</span></div><div class="challenges"><div class="ch-hdr"><h4>Learning Challenges</h4><span class="ch-stats">${doneC}/${t.challenges.length}</span></div>${chHtml}<textarea class="notes-area" placeholder="// notes, insights, links…" data-nk="${nk}" oninput="saveNote(this)">${savedNote}</textarea></div>`;
+      ce.appendChild(card);vis++;
+    });
+    if(vis===0)ce.innerHTML='<div class="empty">all topics completed</div>';
+  });
+  updateStats();
+}
+function toggleT(key){st[key]=!st[key];save();updateStats();if(hd&&st[key])document.querySelector(`[data-key="${key}"]`)?.classList.add('hidden');}
+function toggleCh(ck){st[ck]=!st[ck];save();updateStats();}
+function toggleExp(c){c.classList.toggle('expanded');}
+function saveNote(el){st[el.dataset.nk]=el.value;save();}
+function setF(tag,btn){curF=tag;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
+function setV(v){curV=v;document.getElementById('vG').classList.toggle('on',v==='grid');document.getElementById('vL').classList.toggle('on',v==='list');document.querySelectorAll('.cards').forEach(c=>c.classList.toggle('lv',v==='list'));}
+function setS(s,btn){curSt=s;document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();}
+function toggleHD(){hd=!hd;document.getElementById('hdBtn').classList.toggle('on',hd);render();}
+function doSearch(){
+  const q=document.getElementById('sBox').value.toLowerCase().trim();
+  if(!q){document.querySelectorAll('.card').forEach(c=>c.classList.remove('hidden'));document.querySelectorAll('.section').forEach(s=>s.style.display='');return;}
+  document.querySelectorAll('.section').forEach(sec=>{
+    let any=false;
+    sec.querySelectorAll('.card').forEach(card=>{
+      const m=card.dataset.name?.includes(q)||card.dataset.desc?.includes(q)||card.dataset.challenges?.includes(q);
+      card.classList.toggle('hidden',!m);if(m)any=true;
+    });
+    sec.style.display=any?'':'none';
+  });
+}
+window.addEventListener('scroll',()=>document.getElementById('sNav').classList.toggle('vis',scrollY>300),{passive:true});
+render();
+</script>
+</body>
+</html>
